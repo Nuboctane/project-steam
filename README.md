@@ -1,4 +1,4 @@
 # project-steam
 
 Door:
-Renzo, Paco, Julian, Ivan
+Renzo, Paco, Julian, Ivan, Sofyan
