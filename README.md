@@ -2,5 +2,3 @@
 
 Door:
 Renzo, Paco, Julian, Ivan, Sofyan
-
-test
