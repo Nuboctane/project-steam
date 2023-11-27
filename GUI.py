@@ -1,7 +1,7 @@
 import tkinter
 
 class gui_class():
-    def open_gui():
+    def open_gui(data):
         """
             GUI openen
         """
