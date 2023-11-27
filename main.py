@@ -7,7 +7,8 @@ class main():
     def __init__(self):
         # main.update_json(self)
         file_as_json = main.get_json(self)
-        main.parse_json(self, file_as_json)
+        json_as_array = main.parse_json(self, file_as_json)
+        print(json_as_array)
 
     def update_json(self):
         """
