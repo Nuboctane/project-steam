@@ -1,4 +1,5 @@
 import json
+from GUI import gui_class as GUI
 
 # main python class
 class main():
@@ -8,7 +9,9 @@ class main():
         # main.update_json(self)
         file_as_json = main.get_json(self)
         json_as_array = main.parse_json(self, file_as_json)
-        print(json_as_array)
+
+        GUI.open_gui()
+        GUI.close_gui()
 
     def update_json(self):
         """
