@@ -3,8 +3,13 @@ from GUI import gui_class as GUI
 
 # main python class
 class main():
+    # noobs please read:
+    # 
     # deze functie wordt gerund wanneer "main()" wordt genoemt (onder aan de code)
     # de innit functie serveert als default functie waar class "main()" mee opstart
+    # als de class geen __init__ heeft dan moet je zelf handmatig zijn functies aanroepen
+    # bekijk GUI gui_class als voorbeeld
+
     def __init__(self):
         # main.update_json(self)
         file_as_json = main.get_json(self)
