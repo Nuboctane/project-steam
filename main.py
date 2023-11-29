@@ -10,10 +10,6 @@ class main():
     # bekijk GUI gui_class als voorbeeld
 
     def __init__(self):
-        self.data = JSON.do_all(50, "default")
-        print(self.data)
         GUI.open_gui()
-        GUI.update_gui(self.data)
-        GUI.close_gui()
 
 main()
