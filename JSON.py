@@ -1,37 +1,42 @@
 import json
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class json_parser():
 # voert de gehele json functionalitijd uit
-    def do_all():
-        # update het json bestand met x games
-        json_parser.update_json(50)
+    def do_all(fetch_limit, filter_type):
+        # update het json bestand met x games en str filter type
+        json_parser.update_json(fetch_limit, filter_type)
         file_as_json = json_parser.get_json()
         json_as_array = json_parser.parse_json(file_as_json)
         return json_as_array
     
     # json apparte functies uitvoeren (mocht het nodig zijn)
-    def update_json(fetch_limit):
+    def update_json(fetch_limit, filter_type):
         # steam game id's ophalen van een lijst met steam games
-        url_game_id = "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&format=json"
+        url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}&format=json"
         list_id_game = []
         response = requests.get(url_game_id)
         response_id = response.json()
+        x=0
         for i in range(0, len(response_id["applist"]["apps"])):
             if response_id["applist"]["apps"][i]["name"] == '':
                 pass
-            else:    
+            else: 
+                x+=1   
                 list_id_game.append(response_id["applist"]["apps"][i]["appid"])
-        
-        response_data = []
-        x=0
-        for game_id in list_id_game:
-            x+=1
-            url_game_data = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
-            response = requests.get(url_game_data)
-            response_data.append(response.json())
             if x == fetch_limit:
-                break
+                    break
+            
+        # data van game id's ophalen
+        response_data = []
+        for game_id in list_id_game:
+            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
+            response = requests.get(url_game_data)
+            if response.json()[str(game_id)]["success"]:
+                response_data.append(response.json())
 
         # response data naar steam.json schrijven
         with open("steam.json", "w") as file:
