@@ -38,7 +38,7 @@ class gui_class():
         update_loader(0)
 
         # update json file
-        if False:
+        if fetch_api_bool:
             json_data_array = JSON.do_all(fetch_limit, filter_type)
             print("new json fetched")
         else:
