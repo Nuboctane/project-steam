@@ -14,6 +14,14 @@ class gui_class():
         # GUI data updaten terwijl we in root.mainloop zitten
         print("fetching data...")
 
+        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 50, "default", False, root))
+        main_update_thread.start()
+        root.title("project steam")
+        root.geometry('700x450')
+        root.mainloop()
+    
+    def update_gui(self, fetch_limit, filter_type, fetch_api_bool, root):
+        
         def update_loader(ind):
             frame = loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
             self.label.configure(image=frame)
@@ -27,16 +35,10 @@ class gui_class():
         loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
         self.label = Label(root, width=80, height=80, background="#0e0e0f")
         self.label.pack()
-        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 50, "default", False, root))
-        main_update_thread.start()
         update_loader(0)
-        root.title("project steam")
-        root.geometry('700x450')
-        root.mainloop()
-    
-    def update_gui(self, fetch_limit, filter_type, fetch_api_bool, root):
+
         # update json file
-        if fetch_api_bool:
+        if False:
             json_data_array = JSON.do_all(fetch_limit, filter_type)
             print("new json fetched")
         else:
@@ -47,7 +49,7 @@ class gui_class():
         self.label.pack_forget()
 
         # nieuwe container maken om nieuwe data in te tonen
-        self.card_container = LabelFrame(root, width=400, height=300)
+        self.card_container = LabelFrame(root, width=600, height=500)
         self.card_container.pack()
 
         # laadt game cards
