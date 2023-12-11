@@ -10,6 +10,6 @@ class main():
     # bekijk GUI gui_class als voorbeeld
 
     def __init__(self):
-        GUI.open_gui()
+        GUI.open_gui(self)
 
 main()
