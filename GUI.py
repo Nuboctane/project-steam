@@ -46,11 +46,6 @@ class gui_class():
         # remove loading icon
         self.label.pack_forget()
 
-        # oude getoonde data weg halen
-        if self.card_container:
-            self.card_container.pack_forget()
-            self.card_container = None
-
         # nieuwe container maken om nieuwe data in te tonen
         self.card_container = LabelFrame(root, width=400, height=300)
         self.card_container.pack()
