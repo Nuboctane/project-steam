@@ -58,3 +58,15 @@ class json_parser():
             main_segments.append(initial_segment)
 
         return main_segments
+    
+    def user_name(user_name):
+        #checkt wat het steam id is van de user_name
+        url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&vanityurl={user_name}"
+        response = requests.get(url_naam)
+        response_data = response.json()
+        steam_id = response_data["response"]["steamid"]
+        #checkt de data van de user_name met de steam id die gevonden is
+        url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={steam_id}"
+        response_id = requests.get(url_id)
+        response_id_data = response_id.json()
+        return response_id_data
