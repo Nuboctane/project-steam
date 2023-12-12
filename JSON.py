@@ -70,3 +70,30 @@ class json_parser():
         response_id = requests.get(url_id)
         response_id_data = response_id.json()
         return response_id_data
+    
+    def game_search(game_name):
+        url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}&format=json"
+        response = requests.get(url_game_id)
+        response_id = response.json()
+        matching_games = []
+        for i in range(0, len(response_id["applist"]["apps"])):
+            if game_name.lower() in response_id["applist"]["apps"][i]["name"].lower():
+                matching_games.append(response_id["applist"]["apps"][i])
+        return matching_games
+
+    def game_data(list_id_game):
+        response_data = []
+        for game in list_id_game:
+            game_id = game["appid"]
+            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
+            url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
+            response_review = requests.get(url_game_reviews)
+            response_game = requests.get(url_game_data)
+            new_response = {**response_game.json(), **response_review.json()["query_summary"]}
+            if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
+                #hier onder check hij als de game een game is en niet een dlc
+                if response_game.json()[str(game_id)]["data"]["type"] == "game":
+                    response_data.append(new_response)
+                    with open("tmp.json", "w") as file:
+                        json_object = json.dumps(response_data, indent=4)
+                        file.write(json_object,)
