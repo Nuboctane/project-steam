@@ -10,7 +10,7 @@ class json_parser():
         # update het json bestand met x games en str filter type
         json_parser.update_json(fetch_limit, filter_type)
         file_as_json = json_parser.get_json()
-        json_as_array = json_parser.parse_json(file_as_json)
+        json_as_array = json_parser.parse_json(file_as_json, filter_type)
         return json_as_array
     
     # json apparte functies uitvoeren (mocht het nodig zijn)
@@ -51,11 +51,27 @@ class json_parser():
             file.close()
         return file_as_json
 
-    def parse_json(json_data):
+    def parse_json(json_data, filter_type):
         # json data segmenteren om te gebruiken
         main_segments = [] # hoofd segmenten zijn de objecten in de eerste tak van de json
         for initial_segment in json_data:
-            main_segments.append(initial_segment)
+            match filter_type:
+                case "default":
+                    # filterd niks
+                    main_segments.append(initial_segment)
+                case "popular":
+                    # maak hier een filter voor populaire spellen
+                    None
+                case "price1":
+                    # maak hier een filter voor prijs (laag > hoog)
+                    None
+                case "price2":
+                    # maak hier een filter voor prijs (hoog > laag)
+                    None
+                # maar zelf andere filters die je er in wilt hebben
+                case _:
+                    # filterd niks
+                    main_segments.append(initial_segment)
 
         return main_segments
     

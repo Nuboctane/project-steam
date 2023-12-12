@@ -42,7 +42,7 @@ class gui_class():
             json_data_array = JSON.do_all(fetch_limit, filter_type)
             print("new json fetched")
         else:
-            json_data_array = JSON.parse_json(JSON.get_json())
+            json_data_array = JSON.parse_json(JSON.get_json(), filter_type)
             print("current json fetched")
 
         # remove loading icon
