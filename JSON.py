@@ -34,9 +34,12 @@ class json_parser():
         response_data = []
         for game_id in list_id_game:
             url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
-            response = requests.get(url_game_data)
-            if response.json()[str(game_id)]["success"]:
-                response_data.append(response.json())
+            url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
+            response_review = requests.get(url_game_reviews)
+            response_game = requests.get(url_game_data)
+            new_response = {**response_game.json(), **response_review.json()["query_summary"]}
+            if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
+                response_data.append(new_response)
 
         # response data naar steam.json schrijven
         with open("steam.json", "w") as file:

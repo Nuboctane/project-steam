@@ -125,7 +125,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244440": {
@@ -159,12 +165,12 @@
                     "DigiMight"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 599,
-                    "final": 599,
+                    "currency": "EUR",
+                    "initial": 589,
+                    "final": 589,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$5.99"
+                    "final_formatted": "5,89\u20ac"
                 },
                 "packages": [
                     804739
@@ -183,11 +189,11 @@
                                 "packageid": 804739,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Adventure mosaics. Lost Expedition - $5.99",
+                                "option_text": "Adventure mosaics. Lost Expedition - 5,89\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 599
+                                "price_in_cents_with_discount": 589
                             }
                         ]
                     }
@@ -264,7 +270,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 20, 2023"
+                    "date": "20 Jan, 2023"
                 },
                 "support_info": {
                     "url": "https://www.facebook.com/DigiMight",
@@ -277,7 +283,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244450": {
@@ -311,12 +323,12 @@
                     "DigiMight"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 599,
-                    "final": 599,
+                    "currency": "EUR",
+                    "initial": 589,
+                    "final": 589,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$5.99"
+                    "final_formatted": "5,89\u20ac"
                 },
                 "packages": [
                     804742
@@ -335,11 +347,11 @@
                                 "packageid": 804742,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Adventure mosaics. Lost Expedition - $5.99",
+                                "option_text": "Adventure mosaics. Lost Expedition - 5,89\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 599
+                                "price_in_cents_with_discount": 589
                             }
                         ]
                     }
@@ -411,7 +423,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "May 8, 2023"
+                    "date": "8 May, 2023"
                 },
                 "support_info": {
                     "url": "https://www.facebook.com/DigiMight",
@@ -424,7 +436,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244470": {
@@ -594,7 +612,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244480": {
@@ -626,12 +650,12 @@
                     "ESDigital Games"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 499,
                     "final": 499,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$4.99"
+                    "final_formatted": "4,99\u20ac"
                 },
                 "packages": [
                     941710,
@@ -651,7 +675,7 @@
                                 "packageid": 804754,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "REMEDIUM: Sentinels - $4.99",
+                                "option_text": "REMEDIUM: Sentinels - 4,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -832,7 +856,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jul 18, 2023"
+                    "date": "18 Jul, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -848,7 +872,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 6,
+        "review_score_desc": "Mostly Positive",
+        "total_positive": 49,
+        "total_negative": 16,
+        "total_reviews": 65
     },
     {
         "2244490": {
@@ -887,7 +917,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 7, 2023"
+                    "date": "7 Jan, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -900,7 +930,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244500": {
@@ -931,12 +967,12 @@
                     "Pixel Games UK"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 399,
                     "final": 399,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$3.99"
+                    "final_formatted": "3,99\u20ac"
                 },
                 "packages": [
                     804760
@@ -955,7 +991,7 @@
                                 "packageid": 804760,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Caterpilla - $3.99",
+                                "option_text": "Caterpilla - 3,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -1034,7 +1070,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 30, 2022"
+                    "date": "30 Dec, 2022"
                 },
                 "support_info": {
                     "url": "",
@@ -1047,7 +1083,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244510": {
@@ -1081,12 +1123,12 @@
                     "Fireplace Games"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 499,
                     "final": 499,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$4.99"
+                    "final_formatted": "4,99\u20ac"
                 },
                 "packages": [
                     804763
@@ -1105,7 +1147,7 @@
                                 "packageid": 804763,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "En Garde! Soundtrack - $4.99",
+                                "option_text": "En Garde! Soundtrack - 4,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -1149,7 +1191,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Aug 16, 2023"
+                    "date": "16 Aug, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -1162,7 +1204,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "2 user reviews",
+        "total_positive": 2,
+        "total_negative": 0,
+        "total_reviews": 2
     },
     {
         "2244520": {
@@ -1285,7 +1333,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244530": {
@@ -1323,12 +1377,12 @@
                     "InfinitEnergy Gaming Studio"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
-                    "final": 99,
-                    "discount_percent": 50,
-                    "initial_formatted": "$1.99",
-                    "final_formatted": "$0.99"
+                    "final": 199,
+                    "discount_percent": 0,
+                    "initial_formatted": "",
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804769
@@ -1345,13 +1399,13 @@
                         "subs": [
                             {
                                 "packageid": 804769,
-                                "percent_savings_text": "-50% ",
+                                "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Christmas Land - <span class=\"discount_original_price\">$1.99</span> $0.99",
+                                "option_text": "Christmas Land - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 99
+                                "price_in_cents_with_discount": 199
                             }
                         ]
                     }
@@ -1468,7 +1522,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 9, 2023"
+                    "date": "9 Jan, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -1481,7 +1535,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "1 user reviews",
+        "total_positive": 0,
+        "total_negative": 1,
+        "total_reviews": 1
     },
     {
         "2244540": {
@@ -1518,12 +1578,12 @@
                     "Mindemia"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 1599,
-                    "final": 1599,
+                    "currency": "EUR",
+                    "initial": 1579,
+                    "final": 1579,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$15.99"
+                    "final_formatted": "15,79\u20ac"
                 },
                 "packages": [
                     804772
@@ -1542,11 +1602,11 @@
                                 "packageid": 804772,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Marvelous Marbles - $15.99",
+                                "option_text": "Marvelous Marbles - 15,79\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 1599
+                                "price_in_cents_with_discount": 1579
                             }
                         ]
                     }
@@ -1782,7 +1842,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Mar 31, 2023"
+                    "date": "31 Mar, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -1795,7 +1855,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244550": {
@@ -1827,12 +1893,12 @@
                     "SHIBO GAMES"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 99,
                     "final": 99,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$0.99"
+                    "final_formatted": "0,99\u20ac"
                 },
                 "packages": [
                     804776
@@ -1851,7 +1917,7 @@
                                 "packageid": 804776,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Don't Steal My Christmas! - $0.99",
+                                "option_text": "Don't Steal My Christmas! - 0,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -1966,7 +2032,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 21, 2022"
+                    "date": "21 Dec, 2022"
                 },
                 "support_info": {
                     "url": "http://shibogames.com",
@@ -1982,7 +2048,13 @@
                     "notes": "This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: General Mature Content."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "9 user reviews",
+        "total_positive": 8,
+        "total_negative": 1,
+        "total_reviews": 9
     },
     {
         "2244570": {
@@ -2018,12 +2090,12 @@
                     "Maurizio"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804782
@@ -2042,7 +2114,7 @@
                                 "packageid": 804782,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Space landing - $1.99",
+                                "option_text": "Space landing - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -2125,7 +2197,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 14, 2023"
+                    "date": "14 Jan, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -2138,7 +2210,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "2 user reviews",
+        "total_positive": 2,
+        "total_negative": 0,
+        "total_reviews": 2
     },
     {
         "2244580": {
@@ -2253,7 +2331,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244600": {
@@ -2312,7 +2396,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Feb 6, 2023"
+                    "date": "6 Feb, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -2325,7 +2409,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244610": {
@@ -2466,7 +2556,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244620": {
@@ -2497,12 +2593,12 @@
                     "Okaemon"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 280,
                     "final": 280,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$2.80"
+                    "final_formatted": "2,80\u20ac"
                 },
                 "packages": [
                     804799
@@ -2521,7 +2617,7 @@
                                 "packageid": 804799,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Blacklight - $2.80",
+                                "option_text": "Blacklight - 2,80\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -2629,7 +2725,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 29, 2022"
+                    "date": "29 Dec, 2022"
                 },
                 "support_info": {
                     "url": "",
@@ -2642,7 +2738,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "6 user reviews",
+        "total_positive": 6,
+        "total_negative": 0,
+        "total_reviews": 6
     },
     {
         "2244640": {
@@ -2673,12 +2775,12 @@
                     "GuGuh"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 99,
                     "final": 99,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$0.99"
+                    "final_formatted": "0,99\u20ac"
                 },
                 "packages": [
                     804805
@@ -2697,7 +2799,7 @@
                                 "packageid": 804805,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Trophy Chaser - $0.99",
+                                "option_text": "Trophy Chaser - 0,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -2839,7 +2941,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 27, 2022"
+                    "date": "27 Dec, 2022"
                 },
                 "support_info": {
                     "url": "",
@@ -2852,7 +2954,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 7,
+        "review_score_desc": "Positive",
+        "total_positive": 25,
+        "total_negative": 3,
+        "total_reviews": 28
     },
     {
         "2244650": {
@@ -3020,7 +3128,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244660": {
@@ -3052,12 +3166,12 @@
                     "Gambler"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 499,
                     "final": 499,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$4.99"
+                    "final_formatted": "4,99\u20ac"
                 },
                 "packages": [
                     804811
@@ -3076,7 +3190,7 @@
                                 "packageid": 804811,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Spicy Strip Poker - $4.99",
+                                "option_text": "Spicy Strip Poker - 4,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -3219,7 +3333,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Feb 15, 2023"
+                    "date": "15 Feb, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -3237,7 +3351,13 @@
                     "notes": "Main adult themes included:\r\n- Nudity.\r\n- Masturbation.\r\n- Explicit sex.\r\n- Oral sex.\r\n- Anal sex.\r\n- Casual sex.\r\n- Strong language.\r\n- References to gambling and poker.\r\n\r\nAll characters in this game are fictional and over legal age. Play it just if you are an adult person."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 5,
+        "review_score_desc": "Mixed",
+        "total_positive": 7,
+        "total_negative": 5,
+        "total_reviews": 12
     },
     {
         "2244690": {
@@ -3338,7 +3458,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 31, 2023"
+                    "date": "31 Jan, 2023"
                 },
                 "support_info": {
                     "url": "http://www.dapperpigeon.nl",
@@ -3351,7 +3471,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244710": {
@@ -3394,12 +3520,12 @@
                     "Paradox Interactive"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 799,
                     "final": 799,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$7.99"
+                    "final_formatted": "7,99\u20ac"
                 },
                 "packages": [
                     804827
@@ -3418,7 +3544,7 @@
                                 "packageid": 804827,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "The Lamplighters Leauge - Nocturne - $7.99",
+                                "option_text": "The Lamplighters Leauge - Nocturne - 7,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -3478,7 +3604,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Oct 3, 2023"
+                    "date": "3 Oct, 2023"
                 },
                 "support_info": {
                     "url": "https://support.paradoxplaza.com/hc/en-us",
@@ -3493,7 +3619,13 @@
                     "notes": "Bad Language\r\nViolence"
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "6 user reviews",
+        "total_positive": 2,
+        "total_negative": 4,
+        "total_reviews": 6
     },
     {
         "2244711": {
@@ -3535,12 +3667,12 @@
                     "Paradox Interactive"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 999,
                     "final": 999,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$9.99"
+                    "final_formatted": "9,99\u20ac"
                 },
                 "packages": [
                     804830
@@ -3559,7 +3691,7 @@
                                 "packageid": 804830,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "The Lamplighters Leauge - Original Soundtrack - $9.99",
+                                "option_text": "The Lamplighters Leauge - Original Soundtrack - 9,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -3596,7 +3728,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Oct 3, 2023"
+                    "date": "3 Oct, 2023"
                 },
                 "support_info": {
                     "url": "https://support.paradoxplaza.com/hc/en-us",
@@ -3611,7 +3743,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244712": {
@@ -3654,12 +3792,12 @@
                     "Paradox Interactive"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 399,
                     "final": 399,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$3.99"
+                    "final_formatted": "3,99\u20ac"
                 },
                 "packages": [
                     804833
@@ -3678,7 +3816,7 @@
                                 "packageid": 804833,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "The Lamplighters League - Digital Artbook - $3.99",
+                                "option_text": "The Lamplighters League - Digital Artbook - 3,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -3733,7 +3871,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Oct 3, 2023"
+                    "date": "3 Oct, 2023"
                 },
                 "support_info": {
                     "url": "https://support.paradoxplaza.com/hc/en-us",
@@ -3748,7 +3886,13 @@
                     "notes": "Violence"
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244730": {
@@ -3780,7 +3924,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Nov 24, 2023"
+                    "date": "24 Nov, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -3793,7 +3937,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244740": {
@@ -3870,7 +4020,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 12, 2022"
+                    "date": "12 Dec, 2022"
                 },
                 "support_info": {
                     "url": "",
@@ -3883,7 +4033,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244760": {
@@ -3918,12 +4074,12 @@
                     "Greg Muhlbock"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 99,
                     "final": 99,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$0.99"
+                    "final_formatted": "0,99\u20ac"
                 },
                 "packages": [
                     804853
@@ -3942,7 +4098,7 @@
                                 "packageid": 804853,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Azazel's Christmas Fable Soundtrack - $0.99",
+                                "option_text": "Azazel's Christmas Fable Soundtrack - 0,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -3991,7 +4147,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 1, 2023"
+                    "date": "1 Dec, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -4004,7 +4160,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244770": {
@@ -4042,12 +4204,12 @@
                     "Stonga"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 99,
                     "final": 99,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$0.99"
+                    "final_formatted": "0,99\u20ac"
                 },
                 "packages": [
                     804857
@@ -4066,7 +4228,7 @@
                                 "packageid": 804857,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Stonga Bird - $0.99",
+                                "option_text": "Stonga Bird - 0,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -4162,7 +4324,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Jan 26, 2023"
+                    "date": "26 Jan, 2023"
                 },
                 "support_info": {
                     "url": "https://stonga.net",
@@ -4175,7 +4337,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 7,
+        "review_score_desc": "Positive",
+        "total_positive": 9,
+        "total_negative": 1,
+        "total_reviews": 10
     },
     {
         "2244780": {
@@ -4322,7 +4490,13 @@
                     "notes": "The content in this game may not be suitable for all ages or may not be accessed during work: frequent violence or bloodiness, common adult content."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244791": {
@@ -4358,12 +4532,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 499,
                     "final": 499,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$4.99"
+                    "final_formatted": "4,99\u20ac"
                 },
                 "packages": [
                     934279
@@ -4382,7 +4556,7 @@
                                 "packageid": 934279,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Another Episode Pack - $4.99",
+                                "option_text": "Rune Factory 3 Special - Another Episode Pack - 4,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -4469,7 +4643,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -4482,7 +4656,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244792": {
@@ -4518,12 +4698,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804870
@@ -4542,7 +4722,7 @@
                                 "packageid": 804870,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Dylas' Outfit - $1.99",
+                                "option_text": "Rune Factory 3 Special - Dylas' Outfit - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -4610,7 +4790,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -4623,7 +4803,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244793": {
@@ -4659,12 +4845,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804873
@@ -4683,7 +4869,7 @@
                                 "packageid": 804873,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Doug's Outfit - $1.99",
+                                "option_text": "Rune Factory 3 Special - Doug's Outfit - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -4751,7 +4937,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -4764,7 +4950,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244794": {
@@ -4800,12 +4992,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804876
@@ -4824,7 +5016,7 @@
                                 "packageid": 804876,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Leon's Outfit - $1.99",
+                                "option_text": "Rune Factory 3 Special - Leon's Outfit - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -4892,7 +5084,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -4905,7 +5097,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244795": {
@@ -4941,12 +5139,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804879
@@ -4965,7 +5163,7 @@
                                 "packageid": 804879,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Martin's Outfit - $1.99",
+                                "option_text": "Rune Factory 3 Special - Martin's Outfit - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -5033,7 +5231,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -5046,7 +5244,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244796": {
@@ -5082,12 +5286,12 @@
                     "Marvelous"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 199,
                     "final": 199,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$1.99"
+                    "final_formatted": "1,99\u20ac"
                 },
                 "packages": [
                     804882
@@ -5106,7 +5310,7 @@
                                 "packageid": 804882,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Rune Factory 3 Special - Ryker's Outfit - $1.99",
+                                "option_text": "Rune Factory 3 Special - Ryker's Outfit - 1,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -5174,7 +5378,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 5, 2023"
+                    "date": "5 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://www.xseedgames.com/about-contact/",
@@ -5187,7 +5391,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244810": {
@@ -5347,7 +5557,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244820": {
@@ -5379,7 +5595,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Mar 29, 2023"
+                    "date": "29 Mar, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -5392,7 +5608,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244830": {
@@ -5427,12 +5649,12 @@
                     "Revmatek"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 1999,
-                    "final": 1999,
+                    "currency": "EUR",
+                    "initial": 1950,
+                    "final": 1950,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$19.99"
+                    "final_formatted": "19,50\u20ac"
                 },
                 "packages": [
                     804898
@@ -5451,11 +5673,11 @@
                                 "packageid": 804898,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Nautikin Adventures - $19.99",
+                                "option_text": "Nautikin Adventures - 19,50\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 1999
+                                "price_in_cents_with_discount": 1950
                             }
                         ]
                     }
@@ -5754,7 +5976,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Mar 31, 2023"
+                    "date": "31 Mar, 2023"
                 },
                 "support_info": {
                     "url": "",
@@ -5767,7 +5989,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "1 user reviews",
+        "total_positive": 1,
+        "total_negative": 0,
+        "total_reviews": 1
     },
     {
         "2244840": {
@@ -5805,12 +6033,12 @@
                     "Hede"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 9999,
-                    "final": 999,
+                    "currency": "EUR",
+                    "initial": 9750,
+                    "final": 975,
                     "discount_percent": 90,
-                    "initial_formatted": "$99.99",
-                    "final_formatted": "$9.99"
+                    "initial_formatted": "97,50\u20ac",
+                    "final_formatted": "9,75\u20ac"
                 },
                 "packages": [
                     804901,
@@ -5830,21 +6058,21 @@
                                 "packageid": 804901,
                                 "percent_savings_text": "-90% ",
                                 "percent_savings": 0,
-                                "option_text": "Fears of Glasses o-o World War - <span class=\"discount_original_price\">$99.99</span> $9.99",
+                                "option_text": "Fears of Glasses o-o World War - <span class=\"discount_original_price\">97,50\u20ac</span> 9,75\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 999
+                                "price_in_cents_with_discount": 975
                             },
                             {
                                 "packageid": 811215,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "C - Fears of Glasses o-o World War - Commercial License - $99.99",
+                                "option_text": "C - Fears of Glasses o-o World War - Commercial License - 97,50\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 9999
+                                "price_in_cents_with_discount": 9750
                             }
                         ]
                     }
@@ -5980,7 +6208,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 22, 2022"
+                    "date": "22 Dec, 2022"
                 },
                 "support_info": {
                     "url": "http://hede.ru/",
@@ -5995,7 +6223,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "3 user reviews",
+        "total_positive": 2,
+        "total_negative": 1,
+        "total_reviews": 3
     },
     {
         "2243950": {
@@ -6034,12 +6268,12 @@
                     "Hentai works"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 99,
-                    "final": 59,
-                    "discount_percent": 40,
-                    "initial_formatted": "$0.99",
-                    "final_formatted": "$0.59"
+                    "final": 99,
+                    "discount_percent": 0,
+                    "initial_formatted": "",
+                    "final_formatted": "0,99\u20ac"
                 },
                 "packages": [
                     804573
@@ -6056,13 +6290,13 @@
                         "subs": [
                             {
                                 "packageid": 804573,
-                                "percent_savings_text": "-40% ",
+                                "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Hentai Miko - <span class=\"discount_original_price\">$0.99</span> $0.59",
+                                "option_text": "Hentai Miko - 0,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 59
+                                "price_in_cents_with_discount": 99
                             }
                         ]
                     }
@@ -6195,7 +6429,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Dec 29, 2022"
+                    "date": "29 Dec, 2022"
                 },
                 "support_info": {
                     "url": "",
@@ -6213,7 +6447,13 @@
                     "notes": "Puzzle image contains nudity and sexual content.\r\nIt may not be appropriate for all audiences.\r\nThe characters showed in the game are all over 18 years old."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "8 user reviews",
+        "total_positive": 8,
+        "total_negative": 0,
+        "total_reviews": 8
     },
     {
         "2243980": {
@@ -6245,12 +6485,12 @@
                     "Sekai Project"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 1999,
-                    "final": 1999,
+                    "currency": "EUR",
+                    "initial": 1950,
+                    "final": 1950,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$19.99"
+                    "final_formatted": "19,50\u20ac"
                 },
                 "packages": [
                     804584
@@ -6269,11 +6509,11 @@
                                 "packageid": 804584,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Marshmallow\u2606Imouto\u2606Succubus\u2606 - $19.99",
+                                "option_text": "Marshmallow\u2606Imouto\u2606Succubus\u2606 - 19,50\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 1999
+                                "price_in_cents_with_discount": 1950
                             }
                         ]
                     }
@@ -6344,7 +6584,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Sep 22, 2023"
+                    "date": "22 Sep, 2023"
                 },
                 "support_info": {
                     "url": "https://support.sekaiproject.com/",
@@ -6360,7 +6600,13 @@
                     "notes": "Game contains suggestive language and themes not suitable for all ages."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2243990": {
@@ -6495,7 +6741,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244010": {
@@ -6640,7 +6892,13 @@
                     "notes": "There are minor references to alcohol as well as limited depictions of war, violence and crime."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244020": {
@@ -6675,12 +6933,12 @@
                     "AZR Games"
                 ],
                 "price_overview": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "initial": 299,
                     "final": 299,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$2.99"
+                    "final_formatted": "2,99\u20ac"
                 },
                 "packages": [
                     804599
@@ -6699,7 +6957,7 @@
                                 "packageid": 804599,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Riley In The Abyss - $2.99",
+                                "option_text": "Riley In The Abyss - 2,99\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
@@ -6805,7 +7063,7 @@
                 ],
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Oct 5, 2023"
+                    "date": "5 Oct, 2023"
                 },
                 "support_info": {
                     "url": "TBA",
@@ -6821,7 +7079,13 @@
                     "notes": "Discussions regarding mental health, blood, and dialogue containing cuss words."
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "1 user reviews",
+        "total_positive": 1,
+        "total_negative": 0,
+        "total_reviews": 1
     },
     {
         "2244040": {
@@ -6931,7 +7195,13 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "No user reviews",
+        "total_positive": 0,
+        "total_negative": 0,
+        "total_reviews": 0
     },
     {
         "2244050": {
@@ -6967,12 +7237,12 @@
                     "Boomzap Inc"
                 ],
                 "price_overview": {
-                    "currency": "USD",
-                    "initial": 1199,
-                    "final": 1199,
+                    "currency": "EUR",
+                    "initial": 1179,
+                    "final": 1179,
                     "discount_percent": 0,
                     "initial_formatted": "",
-                    "final_formatted": "$11.99"
+                    "final_formatted": "11,79\u20ac"
                 },
                 "packages": [
                     804609
@@ -6991,11 +7261,11 @@
                                 "packageid": 804609,
                                 "percent_savings_text": " ",
                                 "percent_savings": 0,
-                                "option_text": "Paint By Pixel - $11.99",
+                                "option_text": "Paint By Pixel - 11,79\u20ac",
                                 "option_description": "",
                                 "can_get_free_license": "0",
                                 "is_free_license": false,
-                                "price_in_cents_with_discount": 1199
+                                "price_in_cents_with_discount": 1179
                             }
                         ]
                     }
@@ -7125,7 +7395,7 @@
                 },
                 "release_date": {
                     "coming_soon": false,
-                    "date": "Apr 11, 2023"
+                    "date": "11 Apr, 2023"
                 },
                 "support_info": {
                     "url": "https://boomzap.com/contact/",
@@ -7138,6 +7408,12 @@
                     "notes": null
                 }
             }
-        }
+        },
+        "num_reviews": 0,
+        "review_score": 0,
+        "review_score_desc": "1 user reviews",
+        "total_positive": 1,
+        "total_negative": 0,
+        "total_reviews": 1
     }
 ]
