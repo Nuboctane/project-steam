@@ -3,6 +3,9 @@ import ttk
 from PIL import ImageTk, Image
 from JSON import json_parser as JSON
 import threading
+import requests
+from io import BytesIO
+import time
 
 class gui_class():
     def open_gui(self):
@@ -14,7 +17,7 @@ class gui_class():
         # GUI data updaten terwijl we in root.mainloop zitten
         print("fetching data...")
 
-        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 50, "default", False, root))
+        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False, root))
         main_update_thread.start()
         root.title("project steam")
         root.geometry('700x450')
@@ -45,17 +48,57 @@ class gui_class():
             json_data_array = JSON.parse_json(JSON.get_json(), filter_type)
             print("current json fetched")
 
+        time.sleep(1)
         # remove loading icon
         self.label.pack_forget()
 
-        # nieuwe container maken om nieuwe data in te tonen
-        self.card_container = LabelFrame(root, width=600, height=500)
-        self.card_container.pack()
+        self.canvas = Canvas(root, borderwidth=0, background="#0e0e0f")
+        frame = Frame(self.canvas, background="#0e0e0f")
+        vsb = Scrollbar(self.canvas, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=vsb.set)
 
-        # laadt game cards
+        vsb.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="x", expand=True)
+        self.canvas.create_window((0, 0), window=frame, anchor="nw")
+
+        frame.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+
+        index = 1
         for card in json_data_array:
-            # voor elke game in json array doe:
-            None
-        
+            # haal algemene game card data op
+            for key, value in card.items():
+                if 'data' in value:
+                    card_data = value['data']
+                    break
+            
+            # haal game card review score op
+            for key, value in card.items():
+                if 'review_score_desc' in key:
+                    card_score = value
+                    break
+
+            if card_data['is_free'] == True:
+                card_pice = "$0.00"
+            else:
+                card_pice = card_data['price_overview']['final_formatted']
+            
+            # haal game id op
+            card_id = card_data['steam_appid']
+            
+            # Game card row
+            game_card = Label(frame, height=8, relief="solid", border=0, bg="#0e0e0f")
+            game_card.pack(pady=5, fill="x", expand=True)
+            Button(game_card, border=0, text='view', bg="#2a475e", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
+            Label(game_card, text=card_data['name'], bg="#1b1b1c", fg="#66c0f4", height=2, width=6).grid(row=index, column=1)
+            Label(game_card, text=card_pice, bg="#1b1b1c", fg="#2a475e", height=2).grid(row=index, column=2)
+            Label(game_card, text=card_score, bg="#1b1b1c", fg="#c7d5e0", height=2).grid(row=index, column=3)
+            
+
+    def view_game_button(id):
+        print(id)
+    
     def close_gui():
         exit()
+
+
+           
