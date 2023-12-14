@@ -16,19 +16,12 @@ class json_parser():
     # json apparte functies uitvoeren (mocht het nodig zijn)
     def update_json(fetch_limit, filter_type):
         # steam game id's ophalen van een lijst met steam games
-        url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}&format=json"
+        url_game_id = f"http://steamspy.com/api.php?request=top100forever"
         list_id_game = []
         response = requests.get(url_game_id)
         response_id = response.json()
-        x=0
-        for i in range(0, len(response_id["applist"]["apps"])):
-            if response_id["applist"]["apps"][i]["name"] == '':
-                pass
-            else: 
-                x+=1   
-                list_id_game.append(response_id["applist"]["apps"][i]["appid"])
-            if x == fetch_limit:
-                    break
+        for game in response_id.values():
+            list_id_game.append(game['appid'])
             
         # data van game id's ophalen
         response_data = []
