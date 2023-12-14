@@ -26,11 +26,17 @@ class json_parser():
         # data van game id's ophalen
         response_data = []
         for game_id in list_id_game:
-            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
+            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
             url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
+            url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
             response_review = requests.get(url_game_reviews)
             response_game = requests.get(url_game_data)
-            new_response = {**response_game.json(), **response_review.json()["query_summary"]}
+            response_price = requests.get(url_game_price)
+            if "price_overview" not in response_game.json()[str(game_id)]["data"] and response_game.json()[str(game_id)]["data"]["is_free"] == False:
+                 price_dict = json.loads(response_price.json()["price"])
+                 new_response = {**response_game.json(), **response_review.json()["query_summary"], "price": price_dict}
+            else:
+                new_response = {**response_game.json(), **response_review.json()["query_summary"]}
             if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
                 response_data.append(new_response)
 

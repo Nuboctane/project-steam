@@ -76,11 +76,20 @@ class gui_class():
                 if 'review_score_desc' in key:
                     card_score = value
                     break
-
+                        
+            for key, value in card.items():
+                if 'price' in key:
+                    card_price = value
+                    break
             if card_data['is_free'] == True:
                 card_pice = "$0.00"
             else:
-                card_pice = card_data['price_overview']['final_formatted']
+                try:
+                    card_pice = card_data['price_overview']['final_formatted']
+                except:
+                    card_pice = card_price
+                    if card_pice == 0:
+                        card_pice = "3rd party"
             
             # haal game id op
             card_id = card_data['steam_appid']
