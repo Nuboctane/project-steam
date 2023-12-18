@@ -6,10 +6,11 @@ import threading
 import requests
 from io import BytesIO
 import time
+from ttkthemes import ThemedTk
 
 class gui_class():
     def open_gui(self):
-        root = Tk()
+        root = ThemedTk(theme="arc")
         root.resizable(0, 0)
         root.configure(background='#0e0e0f')
         icon_frame = Frame(root, bg="#0e0e0f")
@@ -54,13 +55,15 @@ class gui_class():
         self.label.pack_forget()
 
         # maak scroll frame
-        self.canvas = Canvas(root, border=0, background="#0e0e0f")
+        self.canvas = Canvas(root, height=400, background="#0e0e0f")
+        self.canvas.place(relx=0, rely=1, anchor='sw', relwidth=1)
         self.canvas_frame = Frame(self.canvas, background="#0e0e0f")
-        scroll = Scrollbar(self.canvas, orient="vertical", command=self.canvas.yview)
-        self.canvas.config(yscrollcommand=scroll.set, yscrollincrement=1)
-        scroll.pack(side="right", fill="y")
-        self.canvas.pack(side="bottom", fill="x", expand=True)
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
+        scroll = Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=scroll.set)
+        scroll.pack(side="right", fill="y")
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        self.canvas.bind('<MouseWheel>', lambda scroll: self.canvas.yview_scroll(-1 * (1), "units")) 
 
         index = 1
         for card in json_data_array:
@@ -101,10 +104,10 @@ class gui_class():
             
             # Game card row
             game_card = LabelFrame(self.canvas_frame, height=8, relief="solid", border=0, bg="#0e0e0f")
-            self.canvas.bind("<Configure>", self.canvas_frame.config(height= self.canvas_frame.winfo_height() + 40))
+            self.canvas.bind("<Configure>", self.canvas_frame.configure(height=self.canvas_frame.winfo_height() + 40))
             game_card.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-
             game_card.pack(pady=1, fill="x", expand=True)
+
             Button(game_card, border=0, text='view', bg="#2a475e", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
             Label(game_card, text=" "+str(card_data['name'])+" ", bg="#1b1b1c", fg="#66c0f4", height=2).grid(row=index, column=1)
             Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#2a475e", height=2).grid(row=index, column=2)
