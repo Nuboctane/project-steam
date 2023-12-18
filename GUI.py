@@ -10,6 +10,7 @@ import time
 class gui_class():
     def open_gui(self):
         root = Tk()
+        root.resizable(0, 0)
         root.configure(background='#0e0e0f')
         icon_frame = Frame(root, bg="#0e0e0f")
         icon_frame.pack()
@@ -52,16 +53,14 @@ class gui_class():
         # remove loading icon
         self.label.pack_forget()
 
-        self.canvas = Canvas(root, borderwidth=0, background="#0e0e0f")
-        frame = Frame(self.canvas, background="#0e0e0f")
-        vsb = Scrollbar(self.canvas, orient="vertical", command=self.canvas.yview)
-        self.canvas.configure(yscrollcommand=vsb.set)
-
-        vsb.pack(side="right", fill="y")
-        self.canvas.pack(side="left", fill="x", expand=True)
-        self.canvas.create_window((0, 0), window=frame, anchor="nw")
-
-        frame.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        # maak scroll frame
+        self.canvas = Canvas(root, border=0, background="#0e0e0f")
+        self.canvas_frame = Frame(self.canvas, background="#0e0e0f")
+        scroll = Scrollbar(self.canvas, orient="vertical", command=self.canvas.yview)
+        self.canvas.config(yscrollcommand=scroll.set, yscrollincrement=1)
+        scroll.pack(side="right", fill="y")
+        self.canvas.pack(side="bottom", fill="x", expand=True)
+        self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
 
         index = 1
         for card in json_data_array:
@@ -95,17 +94,16 @@ class gui_class():
             card_id = card_data['steam_appid']
             
             # Game card row
-            game_card = Label(frame, height=8, relief="solid", border=0, bg="#0e0e0f")
-            game_card.pack(pady=5, fill="x", expand=True)
-            Button(game_card, border=0, text='view', bg="#2a475e", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
-            Label(game_card, text=card_data['name'], bg="#1b1b1c", fg="#66c0f4", height=2, width=6).grid(row=index, column=1)
-            Label(game_card, text=card_pice, bg="#1b1b1c", fg="#2a475e", height=2).grid(row=index, column=2)
-            Label(game_card, text=card_score, bg="#1b1b1c", fg="#c7d5e0", height=2).grid(row=index, column=3)
-            
+            game_card = LabelFrame(self.canvas_frame, height=8, relief="solid", border=0, bg="#0e0e0f")
+            self.canvas.bind("<Configure>", self.canvas_frame.config(height= self.canvas_frame.winfo_height() + 40))
+            game_card.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
-    def view_game_button(id):
-        print(id)
-    
+            game_card.pack(pady=1, fill="x", expand=True)
+            Button(game_card, border=0, text='view', bg="#2a475e", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
+            Label(game_card, text=" "+str(card_data['name'])+" ", bg="#1b1b1c", fg="#66c0f4", height=2).grid(row=index, column=1)
+            Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#2a475e", height=2).grid(row=index, column=2)
+            Label(game_card, text=" "+str(card_score)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2).grid(row=index, column=3)
+
     def close_gui():
         exit()
 
