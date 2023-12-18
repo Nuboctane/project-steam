@@ -81,12 +81,18 @@ class gui_class():
                     card_price = value
                     break
             if card_data['is_free'] == True:
-                card_pice = "$0.00"
+                card_pice = "€0.00"
             else:
                 try:
                     card_pice = card_data['price_overview']['final_formatted']
+                    card_pice = card_pice.replace("€", "")
+                    card_pice = "€"+str(card_pice)
+
                 except:
-                    card_pice = card_price
+                    card_pice = card_price 
+                    if card_pice > 0:
+                        card_pice = "€" + str(card_pice)[:-2] + "." + str(card_pice)[-2:]
+                        
                     if card_pice == 0:
                         card_pice = "3rd party"
             

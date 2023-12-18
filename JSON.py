@@ -115,3 +115,23 @@ class json_parser():
                     with open("tmp.json", "w") as file:
                         json_object = json.dumps(response_data, indent=4)
                         file.write(json_object,)
+
+    def get_game_reviews(game_id):
+        url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=5"
+        response_review = requests.get(url_game_reviews)
+        response_review = response_review.json()
+        reviews = response_review['reviews']
+        lst_reviews = []
+        for i in range(len(reviews)):
+            user = reviews[i]['author']['steamid']
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={user}"
+            response_id = requests.get(url_id)
+            response_id_data = response_id.json()
+            user = response_id_data['response']['players'][0]['personaname']
+            review = reviews[i]['review']
+            if len(review) > 45:
+                review = review[:150] + "..."
+                lst_reviews.append([user, review])
+            else:
+                lst_reviews.append([user, review])
+        return lst_reviews
