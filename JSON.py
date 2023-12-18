@@ -77,18 +77,6 @@ class json_parser():
 
         return main_segments
     
-    def user_name(user_name):
-        #checkt wat het steam id is van de user_name
-        url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={user_name}"
-        response = requests.get(url_naam)
-        response_data = response.json()
-        steam_id = response_data["response"]["steamid"]
-        #checkt de data van de user_name met de steam id die gevonden is
-        url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
-        response_id = requests.get(url_id)
-        response_id_data = response_id.json()
-        return response_id_data
-    
     def game_search(game_name):
         url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}&format=json"
         response = requests.get(url_game_id)
