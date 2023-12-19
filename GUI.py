@@ -10,22 +10,22 @@ from ttkthemes import ThemedTk
 
 class gui_class():
     def open_gui(self):
-        root = ThemedTk(theme="arc")
-        root.resizable(0, 0)
-        root.configure(background='#0e0e0f')
-        icon_frame = Frame(root, bg="#0e0e0f")
+        self.root = ThemedTk(theme="arc")
+        self.root.resizable(0, 0)
+        self.root.configure(background='#0e0e0f')
+        icon_frame = Frame(self.root, bg="#0e0e0f")
         icon_frame.pack()
         
-        # GUI data updaten terwijl we in root.mainloop zitten
+        # GUI data updaten terwijl we in self.root.mainloop zitten
         print("fetching data...")
 
-        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False, root))
+        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
         main_update_thread.start()
-        root.title("project steam")
-        root.geometry('700x450')
-        root.mainloop()
+        self.root.title("project steam")
+        self.root.geometry('700x450')
+        self.root.mainloop()
     
-    def update_gui(self, fetch_limit, filter_type, fetch_api_bool, root):
+    def update_gui(self, fetch_limit, filter_type, fetch_api_bool):
         
         def update_loader(ind):
             frame = loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
@@ -34,11 +34,11 @@ class gui_class():
             ind += 1
             if ind == frame_count:
                 ind = 0
-            root.after(20, update_loader, ind)
+            self.root.after(20, update_loader, ind)
         
         frame_count = 53
         loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
-        self.label = Label(root, width=80, height=80, background="#0e0e0f")
+        self.label = Label(self.root, width=80, height=80, background="#0e0e0f")
         self.label.pack()
         update_loader(0)
 
@@ -55,16 +55,16 @@ class gui_class():
         self.label.pack_forget()
 
         # maak scroll frame
-        self.canvas = Canvas(root, height=400, background="#0e0e0f")
+        self.canvas = Canvas(self.root, height=400, background="#0e0e0f")
         self.canvas.place(relx=0, rely=1, anchor='sw', relwidth=1)
         self.canvas_frame = Frame(self.canvas, background="#0e0e0f")
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
-        scroll = Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        scroll = Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=scroll.set)
         scroll.pack(side="right", fill="y")
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.canvas.bind('<MouseWheel>', lambda scroll: self.canvas.yview_scroll(-1 * (1), "units")) 
-
+        self.root.bind('<MouseWheel>', lambda a: self.canvas.yview_scroll(-5, "units") if a.delta > 0 else self.canvas.yview_scroll(5, "units")) 
+        
         index = 1
         for card in json_data_array:
             # haal algemene game card data op
