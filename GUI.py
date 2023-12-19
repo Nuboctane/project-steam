@@ -61,7 +61,7 @@ class gui_class():
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
         scroll = Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=scroll.set)
-        scroll.pack(side="right", fill="y")
+        scroll.place(relx=0, rely=1, anchor='sw', relwidth=0)
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         self.root.bind('<MouseWheel>', lambda a: self.canvas.yview_scroll(-5, "units") if a.delta > 0 else self.canvas.yview_scroll(5, "units")) 
         
