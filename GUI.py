@@ -55,21 +55,23 @@ class gui_class():
         self.label.pack_forget()
 
         # filter interface maken
-        refresh = Button(self.root, text="refresh", border=0, bg="#2a475e", fg="#66c0f4")
-        refresh.pack(pady=1, padx=5, anchor="w")
+        filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
+        filter_interface.pack(anchor="w")
+        Button(filter_interface, text="fetch new data", border=0, bg="#3b6282", fg="#66c0f4", width=13).grid(row=0, column=0)
         
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         fake_game_card.pack(anchor="w")
 
-        Label(fake_game_card, bg="#1b1b1c", fg="#1b1b1c", width=6).grid(row=0, column=0)
-        Label(fake_game_card, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=15, anchor='w').grid(row=0, column=1)
-        Label(fake_game_card, text=" price ", bg="#1b1b1c", fg="#2a475e", width=10).grid(row=0, column=2)
-        Label(fake_game_card, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20).grid(row=0, column=3)
-        Label(fake_game_card, text=" systems ", bg="#1b1b1c", fg="#3e4554", width=30).grid(row=0, column=4)
+        Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
+        Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=15, anchor='w').grid(row=0, column=1)
+        Button(fake_game_card, border=0, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10).grid(row=0, column=2)
+        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20).grid(row=0, column=3)
+        Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=30).grid(row=0, column=4)
+        Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=14).grid(row=0, column=5)
 
         # maak scroll frame
-        self.canvas = Canvas(self.root, height=385, background="#0e0e0f")
+        self.canvas = Canvas(self.root, height=400, background="#0e0e0f", bd=0, highlightthickness=0)
         self.canvas.place(relx=0, rely=1, anchor='sw', relwidth=1)
         self.canvas_frame = Frame(self.canvas, background="#0e0e0f")
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
@@ -77,7 +79,7 @@ class gui_class():
         self.canvas.configure(yscrollcommand=scroll.set)
         scroll.place(relx=0, rely=1, anchor='sw', relwidth=0)
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.root.bind('<MouseWheel>', lambda a: self.canvas.yview_scroll(-5, "units") if a.delta > 0 else self.canvas.yview_scroll(5, "units")) 
+        self.root.bind('<MouseWheel>', lambda scrollaction: self.canvas.yview_scroll(-5, "units") if scrollaction.delta > 0 else self.canvas.yview_scroll(5, "units")) 
         
         index = 1
         for card in json_data_array:
@@ -86,6 +88,16 @@ class gui_class():
                 if 'data' in value:
                     card_data = value['data']
                     break
+            
+            card_age = "0"
+            for key, value in card_data.items():
+                if 'required_age' in key:
+                    card_age = str(value)
+                    break
+            if card_age == "0":
+                card_age = "All ages"
+            else:
+                card_age+="+"
             
             # haal game card review score op
             for key, value in card.items():
@@ -98,7 +110,7 @@ class gui_class():
                     card_price = value
                     break
             if card_data['is_free'] == True:
-                card_pice = "€0.00"
+                card_pice = "Free To Play"
             else:
                 try:
                     card_pice = card_data['price_overview']['final_formatted']
@@ -128,15 +140,16 @@ class gui_class():
             
             # Game card rij die in de lijst komt te staan
             game_card = LabelFrame(self.canvas_frame, height=8, relief="solid", border=0, bg="#0e0e0f")
-            self.canvas.bind("<Configure>", self.canvas_frame.configure(height=self.canvas_frame.winfo_height() + 40))
+            self.canvas.bind("<Configure>", self.canvas_frame.configure(height=self.canvas_frame.winfo_height() + 100))
             game_card.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
             game_card.pack(pady=1, fill="x", expand=True)
 
-            Button(game_card, border=0, text='view', bg="#2a475e", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
+            Button(game_card, border=0, text='view', bg="#3b6282", fg="#66c0f4", height=2, width=6).grid(row=index, column=0)
             Label(game_card, text=" "+str(game_name)+" ", bg="#1b1b1c", fg="#66c0f4", height=2, width=15, anchor='w').grid(row=index, column=1)
-            Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#2a475e", height=2, width=10).grid(row=index, column=2)
+            Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#8eab11" if str(card_pice) == "Free To Play" else ("#f47b20" if str(card_pice) == "3rd party" else "#c7d5e0"), height=2, width=10).grid(row=index, column=2)
             Label(game_card, text=" "+str(card_score)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=20).grid(row=index, column=3)
-            Label(game_card, text=" "+str(card_systems)+" ", bg="#1b1b1c", fg="#3e4554", height=2, width=30).grid(row=index, column=4)
+            Label(game_card, text=" "+str(card_systems)+" ", bg="#1b1b1c", fg="#4b5466", height=2, width=30).grid(row=index, column=4)
+            Label(game_card, text=" "+str(card_age)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=14).grid(row=index, column=5)
 
     def close_gui():
         exit()
