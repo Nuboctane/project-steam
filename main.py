@@ -10,6 +10,8 @@ class main():
     # bekijk GUI gui_class als voorbeeld
 
     def __init__(self):
+        # TODO: user id "login"
+        # GUI.open_login(self)
         GUI.open_gui(self)
 
 main()
