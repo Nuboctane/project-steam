@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+from crawler import Crawler
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -123,3 +124,24 @@ class json_parser():
             else:
                 lst_reviews.append([user, review])
         return lst_reviews
+    
+    def get_user_info(user_name):
+        output = Crawler().crawl(user_name)
+        steam_id = str(output[0])
+        if "profiles/" in steam_id:
+            steam_id.replace("profiles/", "")
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={steam_id}"
+            response_id = requests.get(url_id)
+            response_id_data = response_id.json()
+            return response_id_data
+        else:
+            steam_id.replace("id/", "")
+            steam_id = output[1]
+            url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&vanityurl={user_name}"
+            response = requests.get(url_naam)
+            response_data = response.json()
+            steam_id = response_data["response"]["steamid"]
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={steam_id}"
+            response_id = requests.get(url_id)
+            response_id_data = response_id.json()
+            return response_id_data
