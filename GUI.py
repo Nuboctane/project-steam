@@ -19,12 +19,61 @@ class gui_class():
         # GUI data updaten terwijl we in self.root.mainloop zitten
         print("fetching data...")
 
-        main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
+        main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+        # main_update_thread = threading.Thread(target=gui_class.login_gui, args=(self,))
+        # main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
         main_update_thread.start()
         self.root.title("project steam")
         self.root.geometry('700x450')
         self.root.mainloop()
+
+    def login_gui(self):
+        self.label = Label(self.root, text="Put in your username", bg="#0e0e0f", fg="#c7d5e0")
+        self.label.pack()
+        self.username_entry = Entry(self.root, bg="#1b1b1c", fg="#c7d5e0", border=0)
+        self.username_entry.pack()
+
+        def on_button_press():
+            username = self.username_entry.get()
+            if username:  # This will be True if username is not empty
+                JSON.get_user_info(username)
+                self.label.pack_forget()
+                self.username_entry.pack_forget()
+                self.button.pack_forget()
+                main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+                main_update_thread.start()
+
+        self.button = Button(self.root, text="login", bg="#3b6282", fg="#66c0f4", border=0, command=on_button_press)
+        self.button.pack()
     
+    def menu_gui(self):
+        self.label = Label(self.root, text="Select one of the options", bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
+        self.label.pack(pady=10)
+
+        button_frame = Frame(self.root, bg="#0e0e0f")
+        button_frame.pack(pady=10)
+
+        def on_user_press():
+            self.label.pack_forget()
+            button_frame.pack_forget()
+            main_update_thread = threading.Thread(target=gui_class.login_gui, args=(self,))
+            main_update_thread.start()
+        self.users = Button(button_frame, text="Friends", bg="#3b6282", fg="#66c0f4", border=0, command=on_user_press, height=2, width=15, font=("Segoe UI", 16))
+        self.users.pack(side=LEFT, padx=10)
+
+        def on_game_press():
+            self.label.pack_forget()
+            button_frame.pack_forget()
+            main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
+            main_update_thread.start()
+        self.games = Button(button_frame, text="Game List", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
+        self.games.pack(side=LEFT, padx=10)
+        
+        def on_Hardware_press():
+            None
+        self.settings = Button(button_frame, text="Hardware", bg="#3b6282", fg="#66c0f4", border=0, command=on_Hardware_press, height=2, width=15, font=("Segoe UI", 16))
+        self.settings.pack(padx=10)
+
     def update_gui(self, fetch_limit, filter_type, fetch_api_bool):
         
         def update_loader(ind):
