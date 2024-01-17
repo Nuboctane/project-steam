@@ -15,13 +15,14 @@ class gui_class():
         self.root.configure(background='#0e0e0f')
         icon_frame = Frame(self.root, bg="#0e0e0f")
         icon_frame.pack()
+        self.canvas_frame = 0
         
         # GUI data updaten terwijl we in self.root.mainloop zitten
         print("fetching data...")
 
         main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
         # main_update_thread = threading.Thread(target=gui_class.login_gui, args=(self,))
-        # main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
+        # main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
         main_update_thread.start()
         self.root.title("project steam")
         self.root.geometry('700x450')
@@ -64,7 +65,7 @@ class gui_class():
         def on_game_press():
             self.label.pack_forget()
             button_frame.pack_forget()
-            main_update_thread = threading.Thread(target=gui_class.update_gui, args=(self, 1, "default", False))
+            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
             main_update_thread.start()
         self.games = Button(button_frame, text="Game List", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
         self.games.pack(side=LEFT, padx=10)
@@ -74,9 +75,12 @@ class gui_class():
         self.settings = Button(button_frame, text="Hardware", bg="#3b6282", fg="#66c0f4", border=0, command=on_Hardware_press, height=2, width=15, font=("Segoe UI", 16))
         self.settings.pack(padx=10)
 
-    def update_gui(self, fetch_limit, filter_type, fetch_api_bool):
+    def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool):
         
         def update_loader(ind):
+            if self.canvas_frame != 0:
+                self.canvas_frame.pack_forget()
+
             frame = loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
             self.label.configure(image=frame)
             self.label.image = frame  # Keep a reference to avoid garbage collection
@@ -106,7 +110,7 @@ class gui_class():
         # filter interface maken
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         filter_interface.pack(anchor="w")
-        Button(filter_interface, text="fetch new data", border=0, bg="#3b6282", fg="#66c0f4", width=13).grid(row=0, column=0)
+        Button(filter_interface, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13).grid(row=0, column=0)
         
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
@@ -153,7 +157,18 @@ class gui_class():
                 if 'review_score_desc' in key:
                     card_score = value
                     break
-                        
+            
+            # haal game card systemen op
+            card_systems = ""
+            am = 0
+            for key, value in card_data.items():
+                if 'platforms' in key:
+                    print(value)
+                    for system, bool in value.items():
+                        if bool:
+                            card_systems += (", " if am>0 else "") + system
+                            am+=1
+
             for key, value in card.items():
                 if 'price' in key:
                     card_price = value
@@ -173,8 +188,6 @@ class gui_class():
                         
                     if card_pice == 0:
                         card_pice = "3rd party"
-            
-            card_systems = "windows, mac, linux, vr, steamdeck"
             
             # data formatten om netjes te tonen in de lijst (alleen voor de lijst weergave)
             
