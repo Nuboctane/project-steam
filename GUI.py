@@ -106,8 +106,7 @@ class gui_class():
                 def on_view_press(game_name):
                     game_id = games_dict[game_name]
                     try:
-                        main_update_thread = threading.Thread(target=TI.send_serial, args=(game_name,))
-                        main_update_thread.start()
+                        TI.send_serial(game_name)
                     except:
                         None
                     print(game_id)
