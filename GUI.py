@@ -2,6 +2,7 @@ from tkinter import *
 import ttk
 from PIL import ImageTk, Image
 from JSON import json_parser as JSON
+from TI import TI
 import threading
 import requests
 from io import BytesIO
@@ -70,10 +71,49 @@ class gui_class():
         self.games = Button(button_frame, text="Game List", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
         self.games.pack(side=LEFT, padx=10)
         
-        def on_Hardware_press():
-            None
-        self.settings = Button(button_frame, text="Hardware", bg="#3b6282", fg="#66c0f4", border=0, command=on_Hardware_press, height=2, width=15, font=("Segoe UI", 16))
+        def on_game_search_press():
+            self.label.pack_forget()
+            button_frame.pack_forget()
+            main_update_thread = threading.Thread(target=gui_class.game_search_gui, args=(self,))
+            main_update_thread.start()
+        self.settings = Button(button_frame, text="Game search", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_search_press, height=2, width=15, font=("Segoe UI", 16))
         self.settings.pack(padx=10)
+
+    def game_search_gui(self):
+        self.label = Label(self.root, text="Input game name", bg="#0e0e0f", fg="#c7d5e0")
+        self.label.pack()
+        self.game_name = Entry(self.root, bg="#1b1b1c", fg="#c7d5e0", border=0)
+        self.game_name.pack()
+
+        def on_button_press():
+            game_name = self.game_name.get()
+            if game_name:
+                list_games = JSON.game_search(game_name)
+                self.label.pack_forget()
+                self.game_name.pack_forget()
+                self.button.pack_forget()
+                frame_games = Frame(self.root, bg="#0e0e0f")
+                frame_games.pack(pady=10)
+
+                # Create a dictionary with game names as keys and game IDs as values
+                games_dict = {game['name']: game['appid'] for game in list_games}
+
+                selected_option = StringVar()
+                dropdown = ttk.Combobox(master=frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
+                button = Button(master=frame_games, text="Volgende", command=lambda: on_view_press(selected_option.get()))
+                dropdown.pack()
+                button.pack()
+                def on_view_press(game_name):
+                    game_id = games_dict[game_name]
+                    try:
+                        main_update_thread = threading.Thread(target=TI.send_serial, args=(game_name,))
+                        main_update_thread.start()
+                    except:
+                        None
+                    print(game_id)
+
+        self.button = Button(self.root, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_button_press)
+        self.button.pack()
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool):
         
@@ -101,16 +141,29 @@ class gui_class():
             print("new json fetched")
         else:
             json_data_array = JSON.parse_json(JSON.get_json(), filter_type)
+            try:
+                TI.send_serial("0")
+                TI.send_serial("1")
+            except:
+                None
             print("current json fetched")
+            
 
         time.sleep(1)
         # remove loading icon
         self.label.pack_forget()
 
         # filter interface maken
+        def on_back_press():
+            filter_interface.pack_forget()
+            fake_game_card.pack_forget()
+            game_card.pack_forget()
+            self.canvas.place_forget()
+            main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+            main_update_thread.start()
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         filter_interface.pack(anchor="w")
-        Button(filter_interface, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13).grid(row=0, column=0)
+        Button(filter_interface, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: on_back_press()).grid(row=0, column=0)
         
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
@@ -163,7 +216,6 @@ class gui_class():
             am = 0
             for key, value in card_data.items():
                 if 'platforms' in key:
-                    print(value)
                     for system, bool in value.items():
                         if bool:
                             card_systems += (", " if am>0 else "") + system
@@ -212,9 +264,5 @@ class gui_class():
             Label(game_card, text=" "+str(card_score)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=20).grid(row=index, column=3)
             Label(game_card, text=" "+str(card_systems)+" ", bg="#1b1b1c", fg="#4b5466", height=2, width=30).grid(row=index, column=4)
             Label(game_card, text=" "+str(card_age)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=14).grid(row=index, column=5)
-
     def close_gui():
         exit()
-
-
-           
