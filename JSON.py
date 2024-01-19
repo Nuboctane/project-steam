@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+from TI import TI
 from crawler import Crawler
 from dotenv import load_dotenv
 load_dotenv()
@@ -88,22 +89,20 @@ class json_parser():
                 matching_games.append(response_id["applist"]["apps"][i])
         return matching_games
 
-    def game_data(list_id_game):
-        response_data = []
-        for game in list_id_game:
-            game_id = game["appid"]
-            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
-            url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
-            response_review = requests.get(url_game_reviews)
-            response_game = requests.get(url_game_data)
+    def game_data(game_id):
+        url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
+        url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
+        url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
+        response_review = requests.get(url_game_reviews)
+        response_game = requests.get(url_game_data)
+        response_price = requests.get(url_game_price)
+        if "price_overview" not in response_game.json()[str(game_id)]["data"] and response_game.json()[str(game_id)]["data"]["is_free"] == False:
+                price_dict = json.loads(response_price.json()["price"])
+                new_response = {**response_game.json(), **response_review.json()["query_summary"], "price": price_dict}
+                return new_response
+        else:
             new_response = {**response_game.json(), **response_review.json()["query_summary"]}
-            if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
-                #hier onder check hij als de game een game is en niet een dlc
-                if response_game.json()[str(game_id)]["data"]["type"] == "game":
-                    response_data.append(new_response)
-                    with open("tmp.json", "w") as file:
-                        json_object = json.dumps(response_data, indent=4)
-                        file.write(json_object,)
+            return new_response
 
     def get_game_reviews(game_id):
         url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=5"
@@ -113,7 +112,7 @@ class json_parser():
         lst_reviews = []
         for i in range(len(reviews)):
             user = reviews[i]['author']['steamid']
-            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={user}"
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={user}"
             response_id = requests.get(url_id)
             response_id_data = response_id.json()
             user = response_id_data['response']['players'][0]['personaname']
@@ -130,18 +129,43 @@ class json_parser():
         steam_id = str(output[0])
         if "profiles/" in steam_id:
             steam_id.replace("profiles/", "")
-            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={steam_id}"
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
             response_id = requests.get(url_id)
             response_id_data = response_id.json()
             return response_id_data
         else:
             steam_id.replace("id/", "")
             steam_id = output[1]
-            url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&vanityurl={user_name}"
+            url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={user_name}"
             response = requests.get(url_naam)
             response_data = response.json()
             steam_id = response_data["response"]["steamid"]
-            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B963C6F4BBFDDBE51DF25EA01CCF94A1&steamids={steam_id}"
+            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
             response_id = requests.get(url_id)
             response_id_data = response_id.json()
             return response_id_data
+        
+    def user_status(response_id_data):
+        status = response_id_data['response']['players'][0]['personastate']
+        if status == 0:
+            status = "status=Offline"
+            TI.send_serial(status)
+        elif status == 1:
+            status = "status=Online"
+            TI.send_serial(status)
+        elif status == 2:
+            status = "status=Busy"
+            TI.send_serial(status)
+        elif status == 3:
+            status = "status=Away"
+            TI.send_serial(status)
+        elif status == 4:
+            status = "status=Snooze"
+            TI.send_serial(status)
+        elif status == 5:
+            status = "status=Looking to trade"
+            TI.send_serial(status)
+        elif status == 6:
+            status = "status=Looking to play"
+            TI.send_serial(status)
+        return status
