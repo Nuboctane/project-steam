@@ -35,9 +35,8 @@ class TI:
             elif data == "1":
                 data = "1\r"
                 serial_port.write(data.encode())
-            elif data == 'on':
-                # Turn led on by sending a '1'
-                data = "2\r"
+            elif "status=" in data:
+                data = f"{vaule}\r"
                 serial_port.write(data.encode())
                 pico_output = TI.read_serial(serial_port)
                 pico_output = pico_output.replace('\r\n', ' ')
@@ -48,3 +47,4 @@ class TI:
                 pico_output = TI.read_serial(serial_port)
                 pico_output = pico_output.replace('\r\n', ' ')
                 print("[PICO] " + pico_output)
+            

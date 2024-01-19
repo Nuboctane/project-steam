@@ -2,9 +2,10 @@ from machine import Pin, ADC, I2C
 import time
 import neopixel
 from pico_i2c_lcd import I2cLcd
+import _thread
 
 
-# Use on-board led
+#setup neopixel and lcd
 led = Pin(25, Pin.OUT)
 np = neopixel.NeoPixel(machine.Pin(13), 8)
 i2c = I2C(0, sda=Pin(8), scl=Pin(9), freq=400000)
@@ -16,7 +17,7 @@ def neopixel_clear():
         np[i] = (0,0,0)
     np.write()
 
-def neopixel_start(value):
+def neopixel_Loading(value):
     neopixel_clear()
     if value == 0:
         for i in range(0, 8):
@@ -29,7 +30,53 @@ def neopixel_start(value):
         np.write()
         time.sleep(5)
         neopixel_clear()
+
+def neopixel_status(value):
+    neopixel_clear()
+    if value == 0:
+        #offline
+        for i in range(0, 8):
+            np[i] = (255, 0, 0)
+        np.write()
+        time.sleep(5)
+        neopixel_clear()
+
+    elif value == 1:
+        #online
+        for i in range(0, 8):
+            np[i] = (0, 255, 0)
+        np.write()
+        time.sleep(5)
+        neopixel_clear()
         
+    elif value == 2:
+        #busy
+        for i in range(0, 8):
+            np[i] = (255, 165, 0)
+        np.write()
+        time.sleep(5)
+        neopixel_clear()
+    elif value == 3:
+        #away
+        for i in range(0, 8):
+            np[i] = (255, 255, 0)
+        np.write()
+        time.sleep(5)
+        neopixel_clear()
+
+
+def lcd_display(data):
+    lcd.clear()
+    if len(data) <= 16:
+        lcd.move_to(0, 0)
+        lcd.putstr(data)
+        time.sleep(5)
+    else:
+        for i in range(len(data) - 15):
+            lcd.move_to(0, 0)
+            lcd.putstr(data[i:i+16])
+            time.sleep(0.5)
+    
 # Blink led to confirm succesful flashing
 for _ in range(5):
     led(0)
@@ -43,23 +90,31 @@ while True:
     data = input()
     if data == '0':
         neopixel_clear()
-        neopixel_start(0)
-        print("Turning led on.")
-        led(1)
+        neopixel_Loading(0)
     elif data == '1':
         neopixel_clear()
-        neopixel_start(1)
-        print("Turning led off.")
-        led(0)
+        neopixel_Loading(1)
+
     elif "lcd=" in data:
         neopixel_clear()
         lcd.clear()
         data = data.replace("lcd=", "")
-        if len(data) <= 16:
-            lcd.move_to(0, 0)
-            lcd.putstr(data)
+        lcd_display(data)
+    
+    elif 'status=' in data:
+        neopixel_clear()
+        data = data.replace("status=", "")
+        if data == "Offline":
+            main_update_thread = _thread.start_new_thread(neopixel_status, (0,))
+            lcd_display(data)
+        elif data == "Online":
+            main_update_thread = _thread.start_new_thread(neopixel_status, (1,))
+            lcd_display(data)
+        elif data == "Busy":
+            main_update_thread = _thread.start_new_thread(neopixel_status, (2,))
+            lcd_display(data)
+        elif data == "Away":
+            main_update_thread = _thread.start_new_thread(neopixel_status, (3,))
+            lcd_display(data)
         else:
-            for i in range(len(data) - 15):
-                lcd.move_to(0, 0)
-                lcd.putstr(data[i:i+16])
-                time.sleep(0.5)
+            neopixel_clear()
