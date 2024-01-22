@@ -133,20 +133,23 @@ class gui_class():
                 self.game_name.pack_forget()
                 self.button.pack_forget()
                 self.back.pack_forget()
-                frame_games = Frame(self.root, bg="#0e0e0f")
-                frame_games.pack(pady=10)
+                self.frame_games = Frame(self.root, bg="#0e0e0f")
+                self.frame_games.pack(pady=10)
 
                 # Create a dictionary with game names as keys and game IDs as values
                 games_dict = {game['name']: game['appid'] for game in list_games}
 
+                self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_back_press())
+                self.back.pack()
                 selected_option = StringVar()
-                dropdown = ttk.Combobox(master=frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
-                button = Button(master=frame_games, text="Volgende", command=lambda: on_view_press(self, selected_option.get()))
-                dropdown.pack()
-                button.pack()
+                self.dropdown = ttk.Combobox(master=self.frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
+                self.view_button = Button(master=self.frame_games, text="View", command=lambda: on_view_press(self, selected_option.get()))
+                self.dropdown.pack()
+                self.view_button.pack()
                 def on_view_press(self, game_name):
-                    dropdown.pack_forget()
-                    button.pack_forget()
+                    self.dropdown.pack_forget()
+                    self.frame_games.pack_forget()
+                    self.view_button.pack_forget()
                     game_id = games_dict[game_name]
                     try:
                         TI.send_serial(game_name)
@@ -158,12 +161,16 @@ class gui_class():
         self.button.pack()
 
         def on_back_press():
+            self.frame_games.pack_forget()
+            self.dropdown.pack_forget()
+            self.view_button.pack_forget()
             self.label.pack_forget()
             self.game_name.pack_forget()
             self.button.pack_forget()
             self.back.pack_forget()
             main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
             main_update_thread.start()
+
         self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_back_press())
         self.back.pack()
 
@@ -232,6 +239,8 @@ class gui_class():
             self.canvas.place_forget()
             main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
             main_update_thread.start()
+            self.loading_label.pack_forget()
+        
         Button(self.frame_game, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: on_back_press()).grid(row=6, column=0)
         Label(self.frame_game, text="Name: "+str(game_data['name']), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=1, column=0, sticky='w')
         Label(self.frame_game, text="Price: "+str(card_price), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=2, column=0, sticky='w')
