@@ -95,8 +95,6 @@ class gui_class():
         self.label = Label(button_frame, text="Select one of the options", bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
         self.label.pack(pady=10)
 
-
-
         def on_user_press():
             self.label.pack_forget()
             button_frame.pack_forget()
@@ -250,18 +248,18 @@ class gui_class():
             if self.canvas_frame != 0:
                 self.canvas_frame.pack_forget()
 
-            frame = loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
-            self.label.configure(image=frame)
-            self.label.image = frame  # Keep a reference to avoid garbage collection
+            frame = self.loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
+            self.loading_label.configure(image=frame)
+            self.loading_label.image = frame  # Keep a reference to avoid garbage collection
             ind += 1
             if ind == frame_count:
                 ind = 0
             self.root.after(20, update_loader, ind)
         
         frame_count = 53
-        loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
-        self.label = Label(self.root, width=80, height=80, background="#0e0e0f")
-        self.label.pack()
+        self.loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
+        self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
+        self.loading_label.pack()
         update_loader(0)
 
         # update json file
@@ -277,13 +275,13 @@ class gui_class():
                 None
             print("current json fetched")
             
-
         time.sleep(1)
         # remove loading icon
-        self.label.pack_forget()
+        self.loading_label.pack_forget()
 
         # filter interface maken
         def on_back_press():
+            self.loading_label.pack_forget()
             filter_interface.pack_forget()
             fake_game_card.pack_forget()
             game_card.pack_forget()
