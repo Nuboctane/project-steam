@@ -30,11 +30,20 @@ class gui_class():
         # self.root.geometry('700x450')
         self.root.minsize(700, 450)
         self.root.mainloop()
+    
+    def clear_root(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
+    def on_back_press(self):
+        gui_class.clear_root(self)
+        main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+        main_update_thread.start()
+    
     def friends_status(self):
+        gui_class.clear_root(self)
         self.frame_friends = Frame(self.root, bg="#0e0e0f")
         self.frame_friends.pack(pady=10)
-
         self.label = Label(self.frame_friends, text="Put in a username", bg="#0e0e0f", fg="#c7d5e0")
         self.label.grid(row=0, column=0)
         self.username_entry = Entry(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0)
@@ -77,17 +86,8 @@ class gui_class():
                     self.country_label.config(text="Country: "+str(country))
         self.search = Button(self.frame_friends, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_search_press)
         self.search.grid(row=1, column=1)
-
-        def on_back_press():
-            self.back.pack_forget()
-            self.frame_friends.pack_forget()
-            main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
-            main_update_thread.start()
-        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_back_press())
+        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
         self.back.pack()
-
-
-    
     
     def menu_gui(self):
         button_frame = Frame(self.root, bg="#0e0e0f")
@@ -96,50 +96,51 @@ class gui_class():
         self.label.pack(pady=10)
 
         def on_user_press():
-            self.label.pack_forget()
-            button_frame.pack_forget()
+            gui_class.clear_root(self)
             main_update_thread = threading.Thread(target=gui_class.friends_status, args=(self,))
             main_update_thread.start()
+
         self.users = Button(button_frame, text="Friends", bg="#3b6282", fg="#66c0f4", border=0, command=on_user_press, height=2, width=15, font=("Segoe UI", 16))
         self.users.pack(side=LEFT, padx=10)
 
         def on_game_press():
-            self.label.pack_forget()
-            button_frame.pack_forget()
+            gui_class.clear_root(self)
             main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
             main_update_thread.start()
+
         self.games = Button(button_frame, text="Game List", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
         self.games.pack(side=LEFT, padx=10)
         
         def on_game_search_press():
-            self.label.pack_forget()
-            button_frame.pack_forget()
+            gui_class.clear_root(self)
             main_update_thread = threading.Thread(target=gui_class.game_search_gui, args=(self,))
             main_update_thread.start()
+
         self.settings = Button(button_frame, text="Game search", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_search_press, height=2, width=15, font=("Segoe UI", 16))
         self.settings.pack(padx=10)
 
     def game_search_gui(self):
+        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
+        self.back.pack()
         self.label = Label(self.root, text="Input game name", bg="#0e0e0f", fg="#c7d5e0")
         self.label.pack()
         self.game_name = Entry(self.root, bg="#1b1b1c", fg="#c7d5e0", border=0)
         self.game_name.pack()
+        self.frame_games = 0
+        self.dropdown = 0
+        self.view_button = 0
 
         def on_button_press(self):
             game_name = self.game_name.get()
             if game_name:
                 list_games = JSON.game_search(game_name)
-                self.label.pack_forget()
-                self.game_name.pack_forget()
-                self.button.pack_forget()
-                self.back.pack_forget()
+                gui_class.clear_root(self)
                 self.frame_games = Frame(self.root, bg="#0e0e0f")
                 self.frame_games.pack(pady=10)
 
                 # Create a dictionary with game names as keys and game IDs as values
                 games_dict = {game['name']: game['appid'] for game in list_games}
-
-                self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_back_press())
+                self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
                 self.back.pack()
                 selected_option = StringVar()
                 self.dropdown = ttk.Combobox(master=self.frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
@@ -147,9 +148,7 @@ class gui_class():
                 self.dropdown.pack()
                 self.view_button.pack()
                 def on_view_press(self, game_name):
-                    self.dropdown.pack_forget()
-                    self.frame_games.pack_forget()
-                    self.view_button.pack_forget()
+                    gui_class.clear_root(self)
                     game_id = games_dict[game_name]
                     try:
                         TI.send_serial(game_name)
@@ -159,20 +158,6 @@ class gui_class():
 
         self.button = Button(self.root, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_button_press(self))
         self.button.pack()
-
-        def on_back_press():
-            self.frame_games.pack_forget()
-            self.dropdown.pack_forget()
-            self.view_button.pack_forget()
-            self.label.pack_forget()
-            self.game_name.pack_forget()
-            self.button.pack_forget()
-            self.back.pack_forget()
-            main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
-            main_update_thread.start()
-
-        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_back_press())
-        self.back.pack()
 
     def Show_game(self, game_id):
         # get game data
@@ -233,13 +218,6 @@ class gui_class():
 
         self.frame_game = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         self.frame_game.pack(anchor="w")
-
-        def on_back_press():
-            self.frame_game.pack_forget()
-            self.canvas.place_forget()
-            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
-            main_update_thread.start()
-            self.loading_label.pack_forget()
         
         Button(self.frame_game, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: on_back_press()).grid(row=6, column=0)
         Label(self.frame_game, text="Name: "+str(game_data['name']), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=1, column=0, sticky='w')
@@ -288,19 +266,12 @@ class gui_class():
         # remove loading icon
         self.loading_label.pack_forget()
 
-        # filter interface maken
-        def on_back_press():
-            self.loading_label.pack_forget()
-            filter_interface.pack_forget()
-            fake_game_card.pack_forget()
-            game_card.pack_forget()
-            self.canvas.place_forget()
-            main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
-            main_update_thread.start()
+        # filter interface maken  
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         filter_interface.pack(anchor="w")
-        Button(filter_interface, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: on_back_press()).grid(row=0, column=0)
-        
+        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
+        self.back.pack()
+                
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         fake_game_card.pack(anchor="w")
