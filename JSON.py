@@ -149,23 +149,25 @@ class json_parser():
         status = response_id_data['response']['players'][0]['personastate']
         if status == 0:
             status = "status=Offline"
-            TI.send_serial(status)
         elif status == 1:
             status = "status=Online"
-            TI.send_serial(status)
+
         elif status == 2:
             status = "status=Busy"
-            TI.send_serial(status)
+
         elif status == 3:
             status = "status=Away"
-            TI.send_serial(status)
+
         elif status == 4:
             status = "status=Snooze"
-            TI.send_serial(status)
+
         elif status == 5:
             status = "status=Looking to trade"
-            TI.send_serial(status)
+
         elif status == 6:
             status = "status=Looking to play"
+        try:
             TI.send_serial(status)
+        except:
+            None
         return status

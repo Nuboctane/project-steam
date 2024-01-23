@@ -219,7 +219,7 @@ class gui_class():
         self.frame_game = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         self.frame_game.pack(anchor="w")
         
-        Button(self.frame_game, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: on_back_press()).grid(row=6, column=0)
+        Button(self.frame_game, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: gui_class.on_back_press(self)).grid(row=6, column=0)
         Label(self.frame_game, text="Name: "+str(game_data['name']), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=1, column=0, sticky='w')
         Label(self.frame_game, text="Price: "+str(card_price), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=2, column=0, sticky='w')
         Label(self.frame_game, text="Review score: "+str(game_reviews), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=3, column=0, sticky='w')
