@@ -57,7 +57,7 @@ class gui_class():
         if location == "menu":
             main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
         elif location == "gamelist":
-            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
+            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, None))
         main_update_thread.start()
     
     def friends_status(self):
@@ -125,7 +125,7 @@ class gui_class():
 
         def on_game_press():
             gui_class.clear_root(self)
-            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
+            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, None))
             main_update_thread.start()
 
         self.games = Button(button_frame, text="View Games", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
@@ -245,21 +245,38 @@ class gui_class():
         image_label.image = img 
         image_label.grid(row=0, column=0)
         
-    def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool):
-        
+    def game_search(self, search):
+        gui_class.clear_root(self)
         gui_class.loading_icon(self)
+        self.search_result_data = []
+        
+        def search_thread(search):
+            self.search_result_data = JSON.game_search(search)
+
+        main_update_thread = threading.Thread(target=search_thread, args=(search))
+        main_update_thread.start()
+        main_update_thread2 = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, self.search_result_data))
+        main_update_thread2.start()
+
+    def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
+        if dataset == None:
+            gui_class.loading_icon(self)
+        
         # update json file
-        if fetch_api_bool:
-            json_data_array = JSON.do_all(fetch_limit, filter_type)
-            print("new json fetched")
+        if dataset == None:
+            if fetch_api_bool:
+                json_data_array = JSON.do_all(fetch_limit, filter_type)
+                print("new json fetched")
+            else:
+                json_data_array = JSON.parse_json(JSON.get_json(), filter_type)
+                try:
+                    TI.send_serial("0")
+                    TI.send_serial("1")
+                except:
+                    None
+                print("current json fetched")
         else:
-            json_data_array = JSON.parse_json(JSON.get_json(), filter_type)
-            try:
-                TI.send_serial("0")
-                TI.send_serial("1")
-            except:
-                None
-            print("current json fetched")
+            json_data_array = dataset
         
         # remove loading icon
         time.sleep(1)
@@ -267,10 +284,17 @@ class gui_class():
 
         # filter interface maken  
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
-        filter_interface.pack(anchor="w")
-        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
-        self.back.pack(anchor="w")
-                
+        self.back = Button(filter_interface, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+        self.back.grid(row=0, column=0)
+        
+        self.game_entry = Entry(filter_interface, bg="#1b1b1c", fg="#c7d5e0", border=0)
+        self.game_entry.grid(row=0, column=1)
+        
+        self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.game_search(self, self.game_entry.get()))
+        self.search.grid(row=0, column=2)
+        
+        filter_interface.pack(fill="x")
+
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         fake_game_card.pack(anchor="w")
