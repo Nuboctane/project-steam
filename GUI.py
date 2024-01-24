@@ -34,6 +34,25 @@ class gui_class():
     def clear_root(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+    
+    def loading_icon(self):
+        def update_loader(ind):
+            if self.canvas_frame != 0:
+                self.canvas_frame.pack_forget()
+
+            frame = self.loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
+            self.loading_label.configure(image=frame)
+            self.loading_label.image = frame  # Keep a reference to avoid garbage collection
+            ind += 1
+            if ind == frame_count:
+                ind = 0
+            self.root.after(20, update_loader, ind)
+        
+        frame_count = 53
+        self.loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
+        self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
+        self.loading_label.pack()
+        update_loader(0)
 
     def on_back_press(self, location):
         gui_class.clear_root(self)
@@ -122,47 +141,50 @@ class gui_class():
         self.settings = Button(button_frame, text="Game search", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_search_press, height=2, width=15, font=("Segoe UI", 16))
         self.settings.pack(padx=10)
 
-    def game_search_gui(self):
-        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
-        self.back.pack(anchor="w")
-        self.label = Label(self.root, text="Input game name", bg="#0e0e0f", fg="#c7d5e0")
-        self.label.pack()
-        self.game_name = Entry(self.root, bg="#1b1b1c", fg="#c7d5e0", border=0)
-        self.game_name.pack()
-        self.frame_games = 0
-        self.dropdown = 0
-        self.view_button = 0
+    def Show_game(self, game_id, json_data_array):
+        gui_class.clear_root(self)
+        gui_class.loading_icon(self)
+        reviews = []
+        positief = []
+        current_review = None
 
-        def on_button_press(self):
-            game_name = self.game_name.get()
-            if game_name:
-                list_games = JSON.game_search(game_name)
-                gui_class.clear_root(self)
-                self.frame_games = Frame(self.root, bg="#0e0e0f")
-                self.frame_games.pack(pady=10)
+        for card in json_data_array:
+            for key, value in card.items():
+                if 'data' in value:
+                    card_data = value['data']
+                    break
+            for key, value in card_data.items():
+                if 'steam_appid' in key:
+                    app_id = value
+                    break
 
-                # Create a dictionary with game names as keys and game IDs as values
-                games_dict = {game['name']: game['appid'] for game in list_games}
-                self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
-                self.back.pack(anchor="w")
-                selected_option = StringVar()
-                self.dropdown = ttk.Combobox(master=self.frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
-                self.view_button = Button(master=self.frame_games, text="View", command=lambda: on_view_press(self, selected_option.get()))
-                self.dropdown.pack()
-                self.view_button.pack()
-                def on_view_press(self, game_name):
-                    gui_class.clear_root(self)
-                    game_id = games_dict[game_name]
-                    try:
-                        TI.send_serial(game_name)
-                    except:
-                        None
-                    gui_class.Show_game(self, game_id)
+            positief.insert(0, card["total_positive"])
 
-        self.button = Button(self.root, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_button_press(self))
-        self.button.pack()
+            if app_id == game_id:
+                current_review = card["total_reviews"]
+            else:
+                reviews.insert(0, card["total_reviews"])
 
-    def Show_game(self, game_id):
+        reviews.insert(0, current_review)
+
+        def gradient_descent(x, y, num_iterations, learning_rate):
+            coefficients = [0, 0]
+            count = 0
+            for _ in range(num_iterations):
+                for i in range(len(x)):
+                    prediction = coefficients[0] + coefficients[1] * x[i]
+                    error = prediction - y[i]
+                    coefficients[0] -= error * learning_rate
+                    coefficients[1] -= error * x[i] * learning_rate
+                    count += 1
+            return coefficients
+        a, b = gradient_descent(reviews, positief, 10, 0.000000000001)
+        current = int(a+b*reviews[0])
+        current = current*-1 if current<0 else current
+
+        # remove loading icon
+        gui_class.clear_root(self)
+        
         self.previous = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "gamelist"))
         self.previous.pack(anchor="w")
         # get game data
@@ -226,7 +248,7 @@ class gui_class():
         
         Label(self.frame_game, text="Name: "+str(game_data['name']), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=1, column=0, sticky='w')
         Label(self.frame_game, text="Price: "+str(card_price), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=2, column=0, sticky='w')
-        Label(self.frame_game, text="Review score: "+str(game_reviews), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=3, column=0, sticky='w')
+        Label(self.frame_game, text="Review score: "+str(game_reviews)+" , Total/Positive: "+str(current), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=3, column=0, sticky='w')
         Label(self.frame_game, text="Genres: "+str(game_genres), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=4, column=0, sticky='w')
         Label(self.frame_game, text="Categories: "+str(game_categories), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=5, column=0, sticky="w")
         image_label = Label(self.frame_game, image=img)
@@ -235,24 +257,7 @@ class gui_class():
         
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool):
         
-        def update_loader(ind):
-            if self.canvas_frame != 0:
-                self.canvas_frame.pack_forget()
-
-            frame = self.loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
-            self.loading_label.configure(image=frame)
-            self.loading_label.image = frame  # Keep a reference to avoid garbage collection
-            ind += 1
-            if ind == frame_count:
-                ind = 0
-            self.root.after(20, update_loader, ind)
-        
-        frame_count = 53
-        self.loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
-        self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
-        self.loading_label.pack()
-        update_loader(0)
-
+        gui_class.loading_icon(self)
         # update json file
         if fetch_api_bool:
             json_data_array = JSON.do_all(fetch_limit, filter_type)
@@ -265,10 +270,10 @@ class gui_class():
             except:
                 None
             print("current json fetched")
-            
-        time.sleep(1)
+        
         # remove loading icon
-        self.loading_label.pack_forget()
+        time.sleep(1)
+        gui_class.clear_root(self)
 
         # filter interface maken  
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
@@ -365,22 +370,14 @@ class gui_class():
                 if 'steam_appid' in key:
                     card_id = value
                     break
-            # card_id = card_data['steam_appid']
-            
-            def on_view_press(self, card_id):
-                filter_interface.pack_forget()
-                fake_game_card.pack_forget()
-                game_card.pack_forget()
-                self.canvas.place_forget()
-                gui_class.Show_game(self, card_id)
-            
+
             # Game card rij die in de lijst komt te staan
             game_card = LabelFrame(self.canvas_frame, height=8, relief="solid", border=0, bg="#0e0e0f")
             self.canvas.bind("<Configure>", self.canvas_frame.configure(height=self.canvas_frame.winfo_height() + 100))
             game_card.bind("<Configure>", self.canvas.configure(scrollregion=self.canvas.bbox("all")))
             game_card.pack(pady=1, fill="x", expand=True)
 
-            Button(game_card, border=0, text='view', bg="#3b6282", fg="#66c0f4", height=2, width=6, command=lambda card_id=card_id: on_view_press(self, card_id)).grid(row=index, column=0)
+            Button(game_card, border=0, text='view', bg="#3b6282", fg="#66c0f4", height=2, width=6, command=lambda card_id=card_id: gui_class.Show_game(self, card_id, json_data_array)).grid(row=index, column=0)
             Label(game_card, text=" "+str(game_name)+" ", bg="#1b1b1c", fg="#66c0f4", height=2, width=15, anchor='w').grid(row=index, column=1)
             Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#8eab11" if str(card_pice) == "Free To Play" else ("#f47b20" if str(card_pice) == "3rd party" else "#c7d5e0"), height=2, width=10).grid(row=index, column=2)
             Label(game_card, text=" "+str(card_score)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=20).grid(row=index, column=3)

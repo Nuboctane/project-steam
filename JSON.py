@@ -58,23 +58,7 @@ class json_parser():
     def parse_json(json_data, filter_type):
         # json data segmenteren om te gebruiken
         main_segments = [] # hoofd segmenten zijn de objecten in de eerste tak van de json
-        # reviews = []
-        # positief = []
         for initial_segment in json_data:
-            # def gradient_descent(x, y, num_iterations=1000, learning_rate=0.0001):
-            #     coefficients = [0, 0]
-            #     count = 0
-            #     for _ in range(num_iterations):
-            #         for i in range(len(x)):
-            #             prediction = coefficients[0] + coefficients[1] * x[i]
-            #             error = prediction - y[i]
-            #             coefficients[0] -= error * learning_rate
-            #             coefficients[1] -= error * x[i] * learning_rate
-            #             print(f"{count} :{coefficients}")
-            #             count += 1
-            #     return coefficients
-            # a, b = gradient_descent(reviews, positief, 10000, 0.000000000001)
-            # print(a+b*reviews[1])
             match filter_type:
                 case "default":
                     # filterd niks
