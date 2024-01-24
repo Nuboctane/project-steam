@@ -9,6 +9,8 @@ from io import BytesIO
 import time
 from ttkthemes import ThemedTk
 from urllib.request import urlopen
+import os
+import json
 
 class gui_class():
     def open_gui(self):
@@ -39,8 +41,11 @@ class gui_class():
                 self.canvas_frame.pack_forget()
 
             frame = self.loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
-            self.loading_label.configure(image=frame)
-            self.loading_label.image = frame  # Keep a reference to avoid garbage collection
+            try:
+                self.loading_label.configure(image=frame)
+                self.loading_label.image = frame  # Keep a reference to avoid garbage collection
+            except:
+                None
             ind += 1
             if ind == frame_count:
                 ind = 0
@@ -57,7 +62,13 @@ class gui_class():
         if location == "menu":
             main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
         elif location == "gamelist":
-            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, None))
+            if os.stat("steam_search.json").st_size > 10:
+                with open("steam_search.json", "r") as file:
+                    file_as_json = json.load(file)
+                    file.close()
+                main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, file_as_json))
+            else:
+                main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, None))
         main_update_thread.start()
     
     def friends_status(self):
@@ -248,22 +259,29 @@ class gui_class():
     def game_search(self, search):
         gui_class.clear_root(self)
         gui_class.loading_icon(self)
-        self.search_result_data = []
-        
-        def search_thread(search):
-            self.search_result_data = JSON.game_search(search)
+        open('steam_search.json', 'w').close()
+
+        def search_thread(a,b,search):
+            JSON.game_search(search)
 
         main_update_thread = threading.Thread(target=search_thread, args=(search))
         main_update_thread.start()
-        main_update_thread2 = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, self.search_result_data))
+        while os.stat("steam_search.json").st_size < 10:
+            print('loading...')
+            time.sleep(0.1)
+        with open("steam_search.json", "r") as file:
+            file_as_json = json.load(file)
+            file.close()
+        main_update_thread2 = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, file_as_json))
         main_update_thread2.start()
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
         if dataset == None:
             gui_class.loading_icon(self)
-        
+        print("dataset:", len(dataset) if dataset != None else "None")
         # update json file
         if dataset == None:
+            print("not using dataset")
             if fetch_api_bool:
                 json_data_array = JSON.do_all(fetch_limit, filter_type)
                 print("new json fetched")
@@ -276,8 +294,10 @@ class gui_class():
                     None
                 print("current json fetched")
         else:
+            print("using dataset")
             json_data_array = dataset
         
+        # print(json_data_array[0])
         # remove loading icon
         time.sleep(1)
         gui_class.clear_root(self)
