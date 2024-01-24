@@ -81,10 +81,34 @@ class json_parser():
                     main_segments.append(initial_segment)
                 case "popular":
                     # maak hier een filter voor populaire spellen
-                    None
+                    def review_score(json_data):
+                        n = len(json_data)
+                        for i in range(n):
+                            for j in range(0, n - i - 1):
+                                if json_data[j].get('review_score') < json_data[j + 1].get('review_score'):
+                                    json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                        return json_data
+                    main_segments = review_score(json_data)
                 case "price1":
                     # maak hier een filter voor prijs (laag > hoog)
-                    None
+                    def price1(json_data):
+                        n = len(json_data)
+                        
+                        for i in range(n):
+                                for j in range(0, n - i - 1):
+                                    print(json_data[3].get('price_overview').get('final'))
+                                    try:
+                                        if json_data[j].get('price_overview').get('final') > json_data[j + 1].get('price_overview').get('final'):
+                                            json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                                    except:
+                                        try:
+                                            if json_data[j].get('price') < json_data[j + 1].get('price'):
+                                                json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                                        except:
+                                            if json_data[j].get('is_free') == True:
+                                                json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                        return json_data
+                    main_segments = price1(json_data)
                 case "price2":
                     # maak hier een filter voor prijs (hoog > laag)
                     None
@@ -142,20 +166,28 @@ class json_parser():
         return lst_reviews
     
     def get_user_info(user_name):
-        output = Crawler().crawl(user_name)
+        output = Crawler().crawl(user_name, validator=(lambda x: x == user_name))
+        if output == []:
+            return print("user not found")
         steam_id = str(output[0])
-        if "profiles/" in steam_id:
-            steam_id.replace("profiles/", "")
+        steam_id = steam_id.split(",")
+        if "profiles/" in steam_id[1]:
+            steam_id = str(steam_id[1])
+            steam_id = steam_id.replace("profiles/", "")
             url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
             response_id = requests.get(url_id)
             response_id_data = response_id.json()
             return response_id_data
         else:
-            steam_id.replace("id/", "")
-            steam_id = output[1]
+            steam_id = str(steam_id[1])
+            steam_id = steam_id.replace("id/", "")
             url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={user_name}"
             response = requests.get(url_naam)
             response_data = response.json()
+            if response_data["response"]["success"] == 42:
+                url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={steam_id}"
+                response = requests.get(url_naam)
+                response_data = response.json()
             steam_id = response_data["response"]["steamid"]
             url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
             response_id = requests.get(url_id)
