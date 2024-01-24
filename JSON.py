@@ -150,33 +150,41 @@ class json_parser():
         return lst_reviews
     
     def get_user_info(user_name):
-        output = Crawler().crawl(user_name, validator=(lambda x: x == user_name))
-        if output == []:
-            return print("user not found")
-        steam_id = str(output[0])
-        steam_id = steam_id.split(",")
-        if "profiles/" in steam_id[1]:
-            steam_id = str(steam_id[1])
-            steam_id = steam_id.replace("profiles/", "")
-            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
-            response_id = requests.get(url_id)
-            response_id_data = response_id.json()
-            return response_id_data
-        else:
-            steam_id = str(steam_id[1])
-            steam_id = steam_id.replace("id/", "")
-            url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={user_name}"
-            response = requests.get(url_naam)
-            response_data = response.json()
-            if response_data["response"]["success"] == 42:
-                url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={steam_id}"
+        steam_id = str(user_name)
+        url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
+        response_id = requests.get(url_id)
+        response_id_data = response_id.json()
+        print(response_id_data)
+        if response_id_data["response"]["players"] == []:
+            output = Crawler().crawl(user_name, validator=(lambda x: x == user_name))
+            if output == []:
+                return print("user not found")
+            steam_id = str(output[0])
+            steam_id = steam_id.split(",")
+            if "profiles/" in steam_id[1]:
+                steam_id = str(steam_id[1])
+                steam_id = steam_id.replace("profiles/", "")
+                url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
+                response_id = requests.get(url_id)
+                response_id_data = response_id.json()
+                return response_id_data
+            else:
+                steam_id = str(steam_id[1])
+                steam_id = steam_id.replace("id/", "")
+                url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={user_name}"
                 response = requests.get(url_naam)
                 response_data = response.json()
-            steam_id = response_data["response"]["steamid"]
-            url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
-            response_id = requests.get(url_id)
-            response_id_data = response_id.json()
-            return response_id_data
+                if response_data["response"]["success"] == 42:
+                    url_naam = f"http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key={os.getenv('STEAM_API_KEY')}&vanityurl={steam_id}"
+                    response = requests.get(url_naam)
+                    response_data = response.json()
+                steam_id = response_data["response"]["steamid"]
+                url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
+                response_id = requests.get(url_id)
+                response_id_data = response_id.json()
+                return response_id_data
+        else:
+            return response_id_data    
         
     def user_status(response_id_data):
         status = response_id_data['response']['players'][0]['personastate']
