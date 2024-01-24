@@ -35,9 +35,12 @@ class gui_class():
         for widget in self.root.winfo_children():
             widget.destroy()
 
-    def on_back_press(self):
+    def on_back_press(self, location):
         gui_class.clear_root(self)
-        main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+        if location == "menu":
+            main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
+        elif location == "gamelist":
+            main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
         main_update_thread.start()
     
     def friends_status(self):
@@ -86,8 +89,8 @@ class gui_class():
                     self.country_label.config(text="Country: "+str(country))
         self.search = Button(self.frame_friends, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_search_press)
         self.search.grid(row=1, column=1)
-        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
-        self.back.pack()
+        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+        self.back.pack(anchor="w")
     
     def menu_gui(self):
         button_frame = Frame(self.root, bg="#0e0e0f")
@@ -120,8 +123,8 @@ class gui_class():
         self.settings.pack(padx=10)
 
     def game_search_gui(self):
-        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
-        self.back.pack()
+        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+        self.back.pack(anchor="w")
         self.label = Label(self.root, text="Input game name", bg="#0e0e0f", fg="#c7d5e0")
         self.label.pack()
         self.game_name = Entry(self.root, bg="#1b1b1c", fg="#c7d5e0", border=0)
@@ -140,8 +143,8 @@ class gui_class():
 
                 # Create a dictionary with game names as keys and game IDs as values
                 games_dict = {game['name']: game['appid'] for game in list_games}
-                self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
-                self.back.pack()
+                self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+                self.back.pack(anchor="w")
                 selected_option = StringVar()
                 self.dropdown = ttk.Combobox(master=self.frame_games, textvariable=selected_option, values=list(games_dict.keys()), background='#ffd53c', width=50)
                 self.view_button = Button(master=self.frame_games, text="View", command=lambda: on_view_press(self, selected_option.get()))
@@ -160,6 +163,8 @@ class gui_class():
         self.button.pack()
 
     def Show_game(self, game_id):
+        self.previous = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "gamelist"))
+        self.previous.pack(anchor="w")
         # get game data
         game_all = JSON.game_data(str(game_id))
         game_data = game_all[str(game_id)]['data']  
@@ -219,7 +224,6 @@ class gui_class():
         self.frame_game = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         self.frame_game.pack(anchor="w")
         
-        Button(self.frame_game, text="< Back", border=0, bg="#3b6282", fg="#66c0f4", width=13, command=lambda: gui_class.on_back_press(self)).grid(row=6, column=0)
         Label(self.frame_game, text="Name: "+str(game_data['name']), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=1, column=0, sticky='w')
         Label(self.frame_game, text="Price: "+str(card_price), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=2, column=0, sticky='w')
         Label(self.frame_game, text="Review score: "+str(game_reviews), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16)).grid(row=3, column=0, sticky='w')
@@ -269,8 +273,8 @@ class gui_class():
         # filter interface maken  
         filter_interface = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
         filter_interface.pack(anchor="w")
-        self.back = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self))
-        self.back.pack()
+        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+        self.back.pack(anchor="w")
                 
         # lijst data informatie koppen
         fake_game_card = LabelFrame(self.root, height=1, border=0, bg="#0e0e0f")
