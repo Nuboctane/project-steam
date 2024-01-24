@@ -23,8 +23,6 @@ class gui_class():
         print("fetching data...")
 
         main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
-        # main_update_thread = threading.Thread(target=gui_class.login_gui, args=(self,))
-        # main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
         main_update_thread.start()
         self.root.title("project steam")
         # self.root.geometry('700x450')
@@ -64,9 +62,11 @@ class gui_class():
     
     def friends_status(self):
         gui_class.clear_root(self)
+        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
+        self.back.pack(anchor="w")
         self.frame_friends = Frame(self.root, bg="#0e0e0f")
         self.frame_friends.pack(pady=10)
-        self.label = Label(self.frame_friends, text="Put in a username", bg="#0e0e0f", fg="#c7d5e0")
+        self.label = Label(self.frame_friends, text="search a username", bg="#0e0e0f", fg="#c7d5e0")
         self.label.grid(row=0, column=0)
         self.username_entry = Entry(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0)
         self.username_entry.grid(row=1, column=0)
@@ -108,8 +108,6 @@ class gui_class():
                     self.country_label.config(text="Country: "+str(country))
         self.search = Button(self.frame_friends, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_search_press)
         self.search.grid(row=1, column=1)
-        self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
-        self.back.pack(anchor="w")
     
     def menu_gui(self):
         button_frame = Frame(self.root, bg="#0e0e0f")
@@ -122,7 +120,7 @@ class gui_class():
             main_update_thread = threading.Thread(target=gui_class.friends_status, args=(self,))
             main_update_thread.start()
 
-        self.users = Button(button_frame, text="Friends", bg="#3b6282", fg="#66c0f4", border=0, command=on_user_press, height=2, width=15, font=("Segoe UI", 16))
+        self.users = Button(button_frame, text="Search Users", bg="#3b6282", fg="#66c0f4", border=0, command=on_user_press, height=2, width=15, font=("Segoe UI", 16))
         self.users.pack(side=LEFT, padx=10)
 
         def on_game_press():
@@ -130,16 +128,8 @@ class gui_class():
             main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False))
             main_update_thread.start()
 
-        self.games = Button(button_frame, text="Game List", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
+        self.games = Button(button_frame, text="View Games", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_press, height=2, width=15, font=("Segoe UI", 16))
         self.games.pack(side=LEFT, padx=10)
-        
-        def on_game_search_press():
-            gui_class.clear_root(self)
-            main_update_thread = threading.Thread(target=gui_class.game_search_gui, args=(self,))
-            main_update_thread.start()
-
-        self.settings = Button(button_frame, text="Game search", bg="#3b6282", fg="#66c0f4", border=0, command=on_game_search_press, height=2, width=15, font=("Segoe UI", 16))
-        self.settings.pack(padx=10)
 
     def Show_game(self, game_id, json_data_array):
         gui_class.clear_root(self)
