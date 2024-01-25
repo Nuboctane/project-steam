@@ -264,10 +264,12 @@ class gui_class():
         def search_thread(a,b,search):
             JSON.game_search(search)
 
-        main_update_thread = threading.Thread(target=search_thread, args=(search))
-        main_update_thread.start()
-        while os.stat("steam_search.json").st_size < 10:
-            time.sleep(0.1)
+        # main_update_thread = threading.Thread(target=search_thread, args=(search))
+        # main_update_thread.start()
+        search_thread(1,2,search)
+        # while os.stat("steam_search.json").st_size < 10:
+        #     print('loading...')
+        #     time.sleep(0.1)
         with open("steam_search.json", "r") as file:
             file_as_json = json.load(file)
             file.close()
@@ -321,7 +323,7 @@ class gui_class():
         Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
         Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=15, anchor='w').grid(row=0, column=1)
         Button(fake_game_card, border=0, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10).grid(row=0, column=2)
-        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20).grid(row=0, column=3)
+        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "popular", False, dataset)).grid(row=0, column=3)
         Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=30).grid(row=0, column=4)
         Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=14).grid(row=0, column=5)
 
