@@ -321,11 +321,11 @@ class gui_class():
         fake_game_card.pack(anchor="w")
 
         Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
-        Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=15, anchor='w').grid(row=0, column=1)
+        Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w').grid(row=0, column=1)
         Button(fake_game_card, border=0, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10).grid(row=0, column=2)
         Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "popular", False, dataset)).grid(row=0, column=3)
-        Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=30).grid(row=0, column=4)
-        Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=14).grid(row=0, column=5)
+        Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=16).grid(row=0, column=4)
+        Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=10).grid(row=0, column=5)
 
         # maak scroll frame
         self.canvas = Canvas(self.root, height=400, background="#0e0e0f", bd=0, highlightthickness=0)
@@ -397,8 +397,8 @@ class gui_class():
             # dit stukje code zorgt ervoor dat wanneer de game naam te lang is dat er ... wordt getoond
             # aan het einde van de naam
             game_name = str(card_data['name'])
-            if len(game_name) > 15:
-                game_name = game_name[:15] + "..."
+            if len(game_name) > 40:
+                game_name = game_name[:40] + "..."
             
             # haal game id op, deze id wordt gebruikt bij het clicken op de "view" knop
             for key, value in card_data.items():
@@ -413,11 +413,11 @@ class gui_class():
             game_card.pack(pady=1, fill="x", expand=True)
 
             Button(game_card, border=0, text='view', bg="#3b6282", fg="#66c0f4", height=2, width=6, command=lambda card_id=card_id: gui_class.Show_game(self, card_id, json_data_array)).grid(row=index, column=0)
-            Label(game_card, text=" "+str(game_name)+" ", bg="#1b1b1c", fg="#66c0f4", height=2, width=15, anchor='w').grid(row=index, column=1)
+            Label(game_card, text=" "+str(game_name)+" ", bg="#1b1b1c", fg="#66c0f4", height=2, width=34, anchor='w').grid(row=index, column=1)
             Label(game_card, text=" "+str(card_pice)+" ", bg="#1b1b1c", fg="#8eab11" if str(card_pice) == "Free To Play" else ("#f47b20" if str(card_pice) == "3rd party" else "#c7d5e0"), height=2, width=10).grid(row=index, column=2)
             Label(game_card, text=" "+str(card_score)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=20).grid(row=index, column=3)
-            Label(game_card, text=" "+str(card_systems)+" ", bg="#1b1b1c", fg="#4b5466", height=2, width=30).grid(row=index, column=4)
-            Label(game_card, text=" "+str(card_age)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=14).grid(row=index, column=5)
+            Label(game_card, text=" "+str(card_systems)+" ", bg="#1b1b1c", fg="#4b5466", height=2, width=16).grid(row=index, column=4)
+            Label(game_card, text=" "+str(card_age)+" ", bg="#1b1b1c", fg="#c7d5e0", height=2, width=10).grid(row=index, column=5)
             
     def close_gui():
         exit()
