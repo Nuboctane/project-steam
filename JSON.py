@@ -63,8 +63,7 @@ class json_parser():
                 case "default":
                     # filterd niks
                     main_segments.append(initial_segment)
-                case "popular":
-                    # maak hier een filter voor populaire spellen
+                case "score highlow":
                     def review_score(json_data):
                         n = len(json_data)
                         for i in range(n):
@@ -73,7 +72,16 @@ class json_parser():
                                     json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
                         return json_data
                     main_segments = review_score(json_data)
-                case "price1":
+                case "score lowhigh":
+                    def reversed_review_score(json_data):
+                        n = len(json_data)
+                        for i in range(n):
+                            for j in range(0, n - i - 1):
+                                if json_data[j].get('review_score') > json_data[j + 1].get('review_score'):
+                                    json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                        return json_data
+                    main_segments = reversed_review_score(json_data)
+                case "price lowhigh":
                     # maak hier een filter voor prijs (laag > hoog)
                     def price1(json_data):
                         n = len(json_data)
@@ -93,11 +101,8 @@ class json_parser():
                                                 json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
                         return json_data
                     main_segments = price1(json_data)
-                case "price2":
+                case "price highlow":
                     # maak hier een filter voor prijs (hoog > laag)
-                    None
-                # maar zelf andere filters die je er in wilt hebben
-                case "statistieken":
                     None
                 case _:
                     # filterd niks

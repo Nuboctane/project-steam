@@ -12,6 +12,12 @@ from urllib.request import urlopen
 import os
 import json
 
+# filter instances:
+# ↓: high to low
+# ↑: low to high
+# A>Z: alphabetical
+# Z>A: reverse alphabetical
+
 class gui_class():
     def open_gui(self):
         self.root = ThemedTk(theme="arc")
@@ -20,6 +26,9 @@ class gui_class():
         icon_frame = Frame(self.root, bg="#0e0e0f")
         icon_frame.pack()
         self.canvas_frame = 0
+
+        # vorige zoek opdrachten verweideren
+        open('steam_search.json', 'w').close()
         
         # GUI data updaten terwijl we in self.root.mainloop zitten
         print("fetching data...")
@@ -297,6 +306,13 @@ class gui_class():
         else:
             print("using dataset")
             json_data_array = dataset
+            if filter_type != "default":
+                print(f"applying {filter_type} filter type to dataset...")
+                with open("steam.json" if os.stat("steam_search.json").st_size < 10 else "steam_search.json", "r") as file:
+                    file_as_json = json.load(file)
+                    file.close()
+                json_data_array = JSON.parse_json(file_as_json, filter_type)
+
         
         # print(json_data_array[0])
         # remove loading icon
@@ -308,12 +324,27 @@ class gui_class():
         self.back = Button(filter_interface, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
         self.back.grid(row=0, column=0)
         
-        self.game_entry = Entry(filter_interface, bg="#1b1b1c", fg="#c7d5e0", border=0)
+        self.game_entry = Entry(filter_interface, bg="#1b1b1c", fg="#525454", width=33, border=0)
+        self.game_entry.insert(0, ' look for games...')
         self.game_entry.grid(row=0, column=1)
         
-        self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.game_search(self, self.game_entry.get()))
+        def focus_search(self):
+            self.game_entry.config(fg="#c7d5e0")
+            self.game_entry.delete(0, END)
+
+        self.game_entry.bind_all("<FocusIn>", lambda a: focus_search(self))
+
+        self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", width=5, border=0, command=lambda: gui_class.game_search(self, self.game_entry.get()))
         self.search.grid(row=0, column=2)
         
+        if filter_type == "default":
+            filter_label_text = "| no filter, click any data column on top to filter shown records"
+        else:
+            filter_label_text = "| filter: "+filter_type+""
+
+        self.filter_label = Label(filter_interface, text=filter_label_text, bg="#0e0e0f", fg="#66c0f4", width=48, border=0, anchor="w")
+        self.filter_label.grid(row=0, column=3)
+
         filter_interface.pack(fill="x")
 
         # lijst data informatie koppen
@@ -323,7 +354,7 @@ class gui_class():
         Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
         Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w').grid(row=0, column=1)
         Button(fake_game_card, border=0, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10).grid(row=0, column=2)
-        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "popular", False, dataset)).grid(row=0, column=3)
+        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "score highlow" if filter_type=="score lowhigh" or filter_type=="defualt" else "score lowhigh", False, json_data_array)).grid(row=0, column=3)
         Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=16).grid(row=0, column=4)
         Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=10).grid(row=0, column=5)
 
