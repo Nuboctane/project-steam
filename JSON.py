@@ -109,8 +109,6 @@ class json_parser():
         list_id_game = []
         response = requests.get(url_game_id)
         response_id = response.json()
-        print(response.json())
-        exit()
         limit = 10
         for game in response_id.values():
             list_id_game.append(game['appid'])
