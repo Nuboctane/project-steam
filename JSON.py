@@ -105,32 +105,38 @@ class json_parser():
         return main_segments
     
     def game_search(game_name):
-        url_game_id = f"http://steamspy.com/api.php?request=tag&tag={game_name}"
-        list_id_game = []
+
+        url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}B963C6F4BBFDDBE51DF25EA01CCF94A1"
         response = requests.get(url_game_id)
         response_id = response.json()
-        limit = 10
-        for game in response_id.values():
-            list_id_game.append(game['appid'])
-            limit -=1
-            if limit == 0: break
+        list_id_game = []
+        limit = 15
+        for i in range(0, len(response_id["applist"]["apps"])):
+            if game_name.lower() in response_id["applist"]["apps"][i]["name"].lower():
+                list_id_game.append(response_id["applist"]["apps"][i]["appid"])
+                if len(list_id_game) == limit:
+                    break
+
 
         # data van game id's ophalen
         response_data = []
         for game_id in list_id_game:
-            url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
-            url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
-            url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
-            response_review = requests.get(url_game_reviews)
-            response_game = requests.get(url_game_data)
-            response_price = requests.get(url_game_price)
-            if "price_overview" not in response_game.json()[str(game_id)]["data"] and response_game.json()[str(game_id)]["data"]["is_free"] == False:
-                 price_dict = json.loads(response_price.json()["price"])
-                 new_response = {**response_game.json(), **response_review.json()["query_summary"], "price": price_dict}
-            else:
-                new_response = {**response_game.json(), **response_review.json()["query_summary"]}
-            if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
-                response_data.append(new_response)
+            try:
+                url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
+                url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
+                url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
+                response_review = requests.get(url_game_reviews)
+                response_game = requests.get(url_game_data)
+                response_price = requests.get(url_game_price)
+                if "price_overview" not in response_game.json()[str(game_id)]["data"] and response_game.json()[str(game_id)]["data"]["is_free"] == False:
+                    price_dict = json.loads(response_price.json()["price"])
+                    new_response = {**response_game.json(), **response_review.json()["query_summary"], "price": price_dict}
+                else:
+                    new_response = {**response_game.json(), **response_review.json()["query_summary"]}
+                if response_game.json()[str(game_id)]["success"] and response_review.json()["success"]:
+                    response_data.append(new_response)
+            except:
+                None
 
         # response data naar steam_search.json schrijven
         with open("steam_search.json", "w") as file:

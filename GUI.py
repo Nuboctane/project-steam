@@ -267,7 +267,6 @@ class gui_class():
         main_update_thread = threading.Thread(target=search_thread, args=(search))
         main_update_thread.start()
         while os.stat("steam_search.json").st_size < 10:
-            print('loading...')
             time.sleep(0.1)
         with open("steam_search.json", "r") as file:
             file_as_json = json.load(file)
