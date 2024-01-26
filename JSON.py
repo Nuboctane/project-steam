@@ -193,7 +193,6 @@ class json_parser():
         url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
         response_id = requests.get(url_id)
         response_id_data = response_id.json()
-        print(response_id_data)
         if response_id_data["response"]["players"] == []:
             output = Crawler().crawl(user_name, validator=(lambda x: x == user_name))
             if output == []:
@@ -223,7 +222,19 @@ class json_parser():
                 response_id_data = response_id.json()
                 return response_id_data
         else:
-            return response_id_data    
+            return response_id_data
+        
+    def user_games_recent(user_id):
+        # Fetch the user's games
+        url = f"http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={os.getenv('STEAM_API_KEY')}&steamid={user_id}&format=json"
+        response = requests.get(url)
+        response_data = response.json()
+        if response_data["response"] == {}:
+            return "Private profile"
+        elif response_data["response"]["total_count"] == 0:
+            return False
+        else:
+            return response_data
         
     def user_status(response_id_data):
         status = response_id_data['response']['players'][0]['personastate']

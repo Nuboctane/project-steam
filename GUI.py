@@ -91,7 +91,25 @@ class gui_class():
         self.username_entry = Entry(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0)
         self.username_entry.grid(row=1, column=0)
         self.count_friends = 0
+        def on_more_info_press(steam_id):
+            all_games = JSON.user_games_recent(steam_id)
+            self.listbox_games = Listbox(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0, width=50)
+            self.listbox_games.grid(row=2, column=1)
+            if all_games == False:
+                self.listbox_games.insert(0, "This user has no recent games")
+            elif all_games == "Private profile":
+                self.listbox_games.insert(0, "This user has a private profile")
+            else:
+                for i in range(len(all_games["response"]["games"])):
+                    game = all_games["response"]["games"][i]["name"]
+                    play_time = all_games["response"]["games"][i]["playtime_2weeks"]
+                    play_time = play_time/60
+                    data = f"{game} has been played {round(play_time, 1)} hours"
+                    self.listbox_games.insert(0, data)
+            
         def on_search_press():
+            if hasattr(self, 'listbox_games'):
+                self.listbox_games.grid_forget()
             username = self.username_entry.get()
             if username:
                 user_info = JSON.get_user_info(username)
@@ -102,6 +120,7 @@ class gui_class():
                     country = "Unknown"
                 status = JSON.user_status(user_info)
                 status = status.replace("status=", "")
+                steam_id = user_info['response']['players'][0]['steamid']
                 game_image = user_info['response']['players'][0]['avatarfull']
                 response = urlopen(game_image)
                 img = Image.open(BytesIO(response.read()))
@@ -119,6 +138,8 @@ class gui_class():
                     self.satus_label.grid(row=4, column=0)
                     self.country_label = Label(self.frame_friends, text="Country: "+str(country), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
                     self.country_label.grid(row=5, column=0)
+                    self.more_info = Button(self.frame_friends, text="Played Games", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_more_info_press(steam_id))
+                    self.more_info.grid(row=6, column=0)
                 else:
                     image_label = Label(self.frame_friends, image=img)
                     image_label.image = img 
@@ -126,6 +147,7 @@ class gui_class():
                     self.name_label.config(text="Name: "+str(username))
                     self.satus_label.config(text="Status: "+str(status))
                     self.country_label.config(text="Country: "+str(country))
+                    self.more_info.config(command=lambda: on_more_info_press(steam_id))
         self.search = Button(self.frame_friends, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_search_press)
         self.search.grid(row=1, column=1)
     
