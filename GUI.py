@@ -307,6 +307,65 @@ class gui_class():
         main_update_thread2 = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, file_as_json))
         main_update_thread2.start()
 
+    def dataset_graph(self, dataset):
+        app = Tk()
+        app.title("Genre Graph")
+        app.minsize(500, 300)
+        app.configure(background='#0e0e0f')
+
+        back = Button(app, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda:app.destroy())
+        back.pack(anchor="w")
+
+        header = Label(app, text="This graph shows the distrubution of genres\nof all records currently visible in the list.", bg="#0e0e0f", fg="#ffffff", border=0)
+        header.pack()
+
+        appframe = LabelFrame(app, bg="#0e0e0f", fg="#66c0f4", border=0, width=50, height=50)
+        appframe.pack()
+
+        Label(appframe, text="Genre", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=0)
+        Label(appframe, text="Frequency", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=1)
+        Label(appframe, text="Percentage", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=2)
+
+        # get game genres
+        game_genres = []
+        for card in dataset:
+            # haal algemene game card data op
+            for key, value in card.items():
+                if 'data' in value:
+                    game_data = value['data']
+                    break
+            for genre in game_data['genres']:
+                game_genres.append(genre['description'])
+        
+        # get data per genre
+        already_used_genres = []
+        genre_graph = []
+        for genre in game_genres:
+            if genre in already_used_genres:
+                continue
+            genre_name = genre
+            already_used_genres.append(genre_name)
+            genre_frequency = game_genres.count(genre)
+            genre_percentage = (genre_frequency/len(game_genres))*100
+            genre_graph.append([genre_name, genre_frequency, genre_percentage])
+            
+        # sort genre data high to low
+        n = len(genre_graph)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                if genre_graph[j][1] < genre_graph[j + 1][1]:
+                    genre_graph[j], genre_graph[j + 1] = genre_graph[j + 1], genre_graph[j]
+
+        # display genre data
+        row_number = 1
+        for genre in genre_graph:
+            Label(appframe, text=genre[0], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=0)
+            Label(appframe, text=genre[1], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=1)
+            Label(appframe, text=str(round(genre[2],2))+"%", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=2)     
+            row_number+=1
+        
+        app.mainloop()
+
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
         if dataset == None:
             gui_class.loading_icon(self)
@@ -358,14 +417,21 @@ class gui_class():
 
         self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", width=5, border=0, command=lambda: gui_class.game_search(self, self.game_entry.get()))
         self.search.grid(row=0, column=2)
-        
+
+        self.divide = Label(filter_interface, text=" | ", bg="#0e0e0f", fg="#66c0f4", width=1, border=0, anchor="w")
+        self.divide.grid(row=0, column=3)
+
+        self.graph = Button(filter_interface, text="Genre Graph", bg="#3b6282", fg="#66c0f4", width=10, border=0, command=lambda: gui_class.dataset_graph(self, json_data_array))
+        self.graph.grid(row=0, column=4)
+
         if filter_type == "default":
             filter_label_text = "| no filter, click any data column on top to filter shown records"
         else:
             filter_label_text = "| filter: "+filter_type+""
 
         self.filter_label = Label(filter_interface, text=filter_label_text, bg="#0e0e0f", fg="#66c0f4", width=48, border=0, anchor="w")
-        self.filter_label.grid(row=0, column=3)
+        self.filter_label.grid(row=0, column=5)
+
 
         filter_interface.pack(fill="x")
 
