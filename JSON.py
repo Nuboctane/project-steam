@@ -128,31 +128,39 @@ class json_parser():
         return main_segments
     
     def game_search(game_name):
+        # vraagt alle game id's op van steam
         url_game_id = f"http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key={os.getenv('STEAM_API_KEY')}&format=json"
         response = requests.get(url_game_id)
         response_id = response.json()
         matching_games = []
+        # checks als de game naam in de lijst met game zit die van steam komt
         for i in range(0, len(response_id["applist"]["apps"])):
             if game_name.lower() in response_id["applist"]["apps"][i]["name"].lower():
+                # als ze matchen dan voegt hij de game toe aan de lijst met games
                 matching_games.append(response_id["applist"]["apps"][i])
 
 
         # data van game id's ophalen
         response_data = []
         for game_id in matching_games:
+            # loopt door de lijst met games en haalt de data op van de game
             game_id = game_id["appid"]
             url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
             url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
             url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
             response_game = requests.get(url_game_data)
+            # Als hij een error krijgt zo als hij kan niet bij data dan zal hij de game skippen en naar de volgende gaan
             try:
+                # als de game geen prijs heeft dan zal hij de prijs van steamspy halen
                 if "price_overview" not in response_game.json()[str(game_id)]["data"] and response_game.json()[str(game_id)]["data"]["is_free"] == False:
                     response_review = requests.get(url_game_reviews)
                     response_price = requests.get(url_game_price)
                     price_dict = json.loads(response_price.json()["price"])
                     new_response = {**response_game.json(), **response_review.json()["query_summary"], "price": price_dict}
                 else:
+                    response_review = requests.get(url_game_reviews)
                     new_response = {**response_game.json(), **response_review.json()["query_summary"]}
+                # check als alle data een success is en als het een game is en voegt het toe aan de lijst met games
                 if response_game.json()[str(game_id)]["success"] and response_review.json()["success"] and response_game.json()[str(game_id)]["data"]["type"] == "game":
                     response_data.append(new_response)
             except:
@@ -172,6 +180,7 @@ class json_parser():
         json_parser.parse_json(file_as_json , "default")
 
     def game_data(game_id):
+        #haalt game data op voor het tonen van games met meer detail
         url_game_data = f"https://store.steampowered.com/api/appdetails?appids={game_id}&cc=nl"
         url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=0"
         url_game_price = f"https://steamspy.com/api.php?request=appdetails&appid={game_id}"
@@ -207,10 +216,12 @@ class json_parser():
         return lst_reviews
     
     def get_user_info(user_name):
+        #zoek users op via steamid of via hun steam naam.
         steam_id = str(user_name)
         url_id = f"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={os.getenv('STEAM_API_KEY')}&steamids={steam_id}"
         response_id = requests.get(url_id)
         response_id_data = response_id.json()
+        #check eerst als het een steamid is als het niet zo is dan gebruikt hij de clawer import deze zoek dan naar de naam maar deze moet wel volledig gelijk zijn.
         if response_id_data["response"]["players"] == []:
             output = Crawler().crawl(user_name, validator=(lambda x: x == user_name))
             if output == []:
@@ -243,7 +254,7 @@ class json_parser():
             return response_id_data
         
     def user_games_recent(user_id):
-        # Fetch the user's games
+        # Haal recenten gespeelde games op van een user en geeft de data terug of private of een False
         url = f"http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key={os.getenv('STEAM_API_KEY')}&steamid={user_id}&format=json"
         response = requests.get(url)
         response_data = response.json()
@@ -255,24 +266,20 @@ class json_parser():
             return response_data
         
     def user_status(response_id_data):
+        #check wat de personastate is en geeft de status terug door. Hij stuurd hier ook de status door naar de PICO.
         status = response_id_data['response']['players'][0]['personastate']
         if status == 0:
             status = "status=Offline"
         elif status == 1:
             status = "status=Online"
-
         elif status == 2:
             status = "status=Busy"
-
         elif status == 3:
             status = "status=Away"
-
         elif status == 4:
             status = "status=Snooze"
-
         elif status == 5:
             status = "status=Looking to trade"
-
         elif status == 6:
             status = "status=Looking to play"
         try:

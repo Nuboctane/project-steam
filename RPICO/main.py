@@ -5,7 +5,7 @@ from pico_i2c_lcd import I2cLcd
 import _thread
 
 
-#setup neopixel and lcd
+#maakt variabelen aan voor neopixel, lcd en de onboard led
 led = Pin(25, Pin.OUT)
 np = neopixel.NeoPixel(machine.Pin(13), 8)
 i2c = I2C(0, sda=Pin(8), scl=Pin(9), freq=400000)
@@ -13,11 +13,13 @@ I2C_ADDR = i2c.scan()[0]
 lcd = I2cLcd(i2c, I2C_ADDR, 2, 16)
 
 def neopixel_clear():
+    #haalt de neopixels leeg
     for i in range(0,8):
         np[i] = (0,0,0)
     np.write()
 
 def neopixel_Loading(value):
+    #Maakt een loading bar met neopixel
     neopixel_clear()
     if value == 0:
         for i in range(0, 8):
@@ -32,6 +34,7 @@ def neopixel_Loading(value):
         neopixel_clear()
 
 def neopixel_status(value):
+    #Laat status zien met neopixel met kleur
     neopixel_clear()
     if value == 0:
         #offline
@@ -66,26 +69,29 @@ def neopixel_status(value):
 
 
 def lcd_display(data):
+    #Laat de data zijn op het LCD
     lcd.clear()
     if len(data) <= 16:
         lcd.move_to(0, 0)
         lcd.putstr(data)
         time.sleep(5)
     else:
+        #Loopt door de data heen als het meer dan 16 karakters zijn
         for i in range(len(data) - 15):
             lcd.move_to(0, 0)
             lcd.putstr(data[i:i+16])
             time.sleep(0.5)
     
-# Blink led to confirm succesful flashing
+# Knipperen met led om succesvol knipperen te bevestigen
 for _ in range(5):
     led(0)
     time.sleep(.1)
     led(1)
     time.sleep(.1)
 
-# Wait for data from the connection
 while True:
+    #wacht voor data die naar de PICO wordt gestuurd.
+    # als data wordt onvangen check hij als het een commando is of niet en voert hij het uit
     lcd.clear()
     data = input()
     if data == '0':
