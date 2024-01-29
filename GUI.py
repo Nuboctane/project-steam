@@ -318,13 +318,6 @@ class gui_class():
         header = Label(self.root, text="This graph shows the distrubution of genres\nof all records currently visible in the list.", bg="#0e0e0f", fg="#ffffff", border=0)
         header.pack()
 
-        self.rootframe = LabelFrame(self.root, bg="#0e0e0f", fg="#66c0f4", border=0, width=50, height=50)
-        self.rootframe.pack()
-
-        Label(self.rootframe, text="Genre", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=0)
-        Label(self.rootframe, text="Frequency", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=1)
-        Label(self.rootframe, text="Percentage", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=2)
-
         # get game genres
         game_genres = []
         for card in dataset:
@@ -348,38 +341,93 @@ class gui_class():
             genre_percentage = (genre_frequency/len(game_genres))*100
             genre_graph.append([genre_name, genre_frequency, genre_percentage])
             
-        # sort genre data high to low
-        n = len(genre_graph)
-        for i in range(n):
-            for j in range(0, n - i - 1):
-                if genre_graph[j][1] < genre_graph[j + 1][1]:
-                    genre_graph[j], genre_graph[j + 1] = genre_graph[j + 1], genre_graph[j]
-
         # display genre data
-        row_number = 1
-        for genre in genre_graph:
-            Label(self.rootframe, text=genre[0], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=0)
-            Label(self.rootframe, text=genre[1], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=1)
-            Label(self.rootframe, text=str(round(genre[2],2))+"%", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=2)     
-            row_number+=1
-        
         # get graph image
         labels = [genre[0] for genre in genre_graph]
         labels = ",".join("\""+str(x)+"\"" for x in labels)
         data = [genre[1] for genre in genre_graph]
         data = ",".join(str(x) for x in data)
+        data2 = [round(genre[2],1) for genre in genre_graph]
+        data2 = ",".join(str(x) for x in data2)
 
         qc = QuickChart()
-        qc.width = 500
-        qc.height = 300
+        qc.width = 700
+        qc.height = 400
         qc.version = '2.9.4'
-        qc.config = """{ type: 'radar', data: {labels: ["""+labels+"""], datasets: [{label: 'Genre distribution',data: ["""+data+"""] }] } }"""
+        qc.config = """{ 
+            type: 'radar',
+            data: {
+                labels: ["""+labels+"""],
+                datasets: [
+                    {
+                        label: 'Frequency',
+                        data: ["""+data+"""]
+                    },
+                    {
+                        label: 'Precent',
+                        data: ["""+data2+"""]
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    backgroundImageUrl: 'https://www.colorhexa.com/0e0e0f.png',
+                },
+                "datalabels": {
+                    "display": true,
+                    "align": "center",
+                    "anchor": "center",
+                    "backgroundColor": "#66c0f4",
+                    "borderColor": "#ddd",
+                    "borderRadius": 6,
+                    "borderWidth": 1,
+                    "padding": 2,
+                    "color": "#ffffff",
+                    "font": {
+                        "family": "sans-serif",
+                        "size": 15,
+                        "style": "bold"
+                    }
+                },
+                legend: {
+                    display: true
+                },
+                "scale": {
+                    "ticks": {
+                        "display": true,
+                        "stepSize": 25,
+                        "fontSize": 20
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                        "display": true,
+                        "color": "rgba(255, 255, 255, 0.5)",
+                        "borderDash": [
+                            0,
+                            0
+                        ],
+                        "lineWidth": 1,
+                        "drawBorder": true,
+                        "drawOnChartArea": true,
+                        "drawTicks": true,
+                        "tickMarkLength": 10,
+                        "zeroLineWidth": 1,
+                        "zeroLineColor": "rgba(255, 255, 255, 0)",
+                        "zeroLineBorderDash": [
+                            0,
+                            0
+                        ]
+                    }
+                }
+            }
+        }"""
+        print(qc.get_url())
         response = urlopen(qc.get_url())
-        img = Image.open(BytesIO(response.read()))
+        self.img = Image.open(BytesIO(response.read()))
         response.close()
-        img = ImageTk.PhotoImage(img)
-        image_label = Label(self.root, image=img).pack()
-        image_label.image = img 
+        self.img = ImageTk.PhotoImage(self.img)
+        image_label = Label(self.root, image=self.img, border=0).pack()
+        image_label.image = self.img 
         image_label.grid(row=0, column=0) 
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
