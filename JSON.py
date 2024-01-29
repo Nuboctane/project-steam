@@ -47,7 +47,29 @@ class json_parser():
             json_object = json.dumps(response_data, indent=4)
             file.write(json_object)
             file.close()
-
+            
+    def get_object_price(initial_segment):
+        card_price = 0
+        for key, value in initial_segment.items():
+            if 'data' in value:
+                card_data = value['data']
+                break
+        for key, value in card_data.items():
+            if 'price' in key:
+                card_price = float(str(card_price).replace("€", ""))
+                break
+            if card_data['is_free'] == True:
+                card_price = -2
+            else:
+                try:
+                    card_price = card_data['price_overview']['final_formatted']
+                    card_price = float(str(card_price).replace("€", ""))
+                except:
+                    if card_price == 0:
+                        card_price = -1
+            if "€" in str(card_price):
+                card_price = float(str(card_price).replace("€", "").replace(",", "."))
+            return card_price
     def get_json():
         # json data op halen uit bestand "steam.json"
         with open("steam.json", "r") as file:
@@ -82,28 +104,24 @@ class json_parser():
                         return json_data
                     main_segments = reversed_review_score(json_data)
                 case "price lowhigh":
-                    # maak hier een filter voor prijs (laag > hoog)
-                    def price1(json_data):
+                    def reversed_price_sort(json_data):
                         n = len(json_data)
-                        
                         for i in range(n):
-                                for j in range(0, n - i - 1):
-                                    print(json_data[3].get('price_overview').get('final'))
-                                    try:
-                                        if json_data[j].get('price_overview').get('final') > json_data[j + 1].get('price_overview').get('final'):
-                                            json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
-                                    except:
-                                        try:
-                                            if json_data[j].get('price') < json_data[j + 1].get('price'):
-                                                json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
-                                        except:
-                                            if json_data[j].get('is_free') == True:
-                                                json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                            for j in range(0, n - i - 1):
+                                if json_parser.get_object_price(json_data[j]) > json_parser.get_object_price(json_data[j + 1]):
+                                    json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
                         return json_data
-                    main_segments = price1(json_data)
+                    main_segments = reversed_price_sort(json_data)
                 case "price highlow":
                     # maak hier een filter voor prijs (hoog > laag)
-                    None
+                    def price_sort(json_data):
+                        n = len(json_data)
+                        for i in range(n):
+                            for j in range(0, n - i - 1):
+                                if json_parser.get_object_price(json_data[j]) < json_parser.get_object_price(json_data[j + 1]):
+                                    json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
+                        return json_data
+                    main_segments = price_sort(json_data)
                 case _:
                     # filterd niks
                     main_segments.append(initial_segment)

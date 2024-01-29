@@ -11,6 +11,7 @@ from ttkthemes import ThemedTk
 from urllib.request import urlopen
 import os
 import json
+from quickchart import QuickChart
 
 # filter instances:
 # ↓: high to low
@@ -35,8 +36,8 @@ class gui_class():
 
         main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
         main_update_thread.start()
+
         self.root.title("project steam")
-        # self.root.geometry('700x450')
         self.root.minsize(700, 450)
         self.root.mainloop()
     
@@ -152,6 +153,7 @@ class gui_class():
         self.search.grid(row=1, column=1)
     
     def menu_gui(self):
+
         button_frame = Frame(self.root, bg="#0e0e0f")
         button_frame.pack(pady=10)
         self.label = Label(button_frame, text="Select one of the options", bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
@@ -308,23 +310,20 @@ class gui_class():
         main_update_thread2.start()
 
     def dataset_graph(self, dataset):
-        app = Tk()
-        app.title("Genre Graph")
-        app.minsize(500, 300)
-        app.configure(background='#0e0e0f')
+        gui_class.clear_root(self)
+        
+        self.previous = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "gamelist"))
+        self.previous.pack(anchor="w")
 
-        back = Button(app, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda:app.destroy())
-        back.pack(anchor="w")
-
-        header = Label(app, text="This graph shows the distrubution of genres\nof all records currently visible in the list.", bg="#0e0e0f", fg="#ffffff", border=0)
+        header = Label(self.root, text="This graph shows the distrubution of genres\nof all records currently visible in the list.", bg="#0e0e0f", fg="#ffffff", border=0)
         header.pack()
 
-        appframe = LabelFrame(app, bg="#0e0e0f", fg="#66c0f4", border=0, width=50, height=50)
-        appframe.pack()
+        self.rootframe = LabelFrame(self.root, bg="#0e0e0f", fg="#66c0f4", border=0, width=50, height=50)
+        self.rootframe.pack()
 
-        Label(appframe, text="Genre", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=0)
-        Label(appframe, text="Frequency", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=1)
-        Label(appframe, text="Percentage", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=2)
+        Label(self.rootframe, text="Genre", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=0)
+        Label(self.rootframe, text="Frequency", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=1)
+        Label(self.rootframe, text="Percentage", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=0, column=2)
 
         # get game genres
         game_genres = []
@@ -359,12 +358,29 @@ class gui_class():
         # display genre data
         row_number = 1
         for genre in genre_graph:
-            Label(appframe, text=genre[0], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=0)
-            Label(appframe, text=genre[1], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=1)
-            Label(appframe, text=str(round(genre[2],2))+"%", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=2)     
+            Label(self.rootframe, text=genre[0], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=0)
+            Label(self.rootframe, text=genre[1], bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=1)
+            Label(self.rootframe, text=str(round(genre[2],2))+"%", bg="#0e0e0f", fg="#66c0f4", width=15, border=5).grid(row=row_number, column=2)     
             row_number+=1
         
-        app.mainloop()
+        # get graph image
+        labels = [genre[0] for genre in genre_graph]
+        labels = ",".join("\""+str(x)+"\"" for x in labels)
+        data = [genre[1] for genre in genre_graph]
+        data = ",".join(str(x) for x in data)
+
+        qc = QuickChart()
+        qc.width = 500
+        qc.height = 300
+        qc.version = '2.9.4'
+        qc.config = """{ type: 'radar', data: {labels: ["""+labels+"""], datasets: [{label: 'Genre distribution',data: ["""+data+"""] }] } }"""
+        response = urlopen(qc.get_url())
+        img = Image.open(BytesIO(response.read()))
+        response.close()
+        img = ImageTk.PhotoImage(img)
+        image_label = Label(self.root, image=img).pack()
+        image_label.image = img 
+        image_label.grid(row=0, column=0) 
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
         if dataset == None:
@@ -405,7 +421,7 @@ class gui_class():
         self.back = Button(filter_interface, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
         self.back.grid(row=0, column=0)
         
-        self.game_entry = Entry(filter_interface, bg="#1b1b1c", fg="#525454", width=33, border=0)
+        self.game_entry = Entry(filter_interface, bg="#1b1b1c", fg="#525454", width=33, border=1)
         self.game_entry.insert(0, ' look for games...')
         self.game_entry.grid(row=0, column=1)
         
@@ -415,14 +431,11 @@ class gui_class():
 
         self.game_entry.bind_all("<FocusIn>", lambda a: focus_search(self))
 
-        self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", width=5, border=0, command=lambda: gui_class.game_search(self, self.game_entry.get()))
+        self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", width=5, border=1, command=lambda: gui_class.game_search(self, self.game_entry.get()))
         self.search.grid(row=0, column=2)
 
-        self.divide = Label(filter_interface, text=" | ", bg="#0e0e0f", fg="#66c0f4", width=1, border=0, anchor="w")
-        self.divide.grid(row=0, column=3)
-
-        self.graph = Button(filter_interface, text="Genre Graph", bg="#3b6282", fg="#66c0f4", width=10, border=0, command=lambda: gui_class.dataset_graph(self, json_data_array))
-        self.graph.grid(row=0, column=4)
+        self.graph = Button(filter_interface, text="Genre Graph", bg="#3b6282", fg="#66c0f4", width=10, border=1, command=lambda: gui_class.dataset_graph(self, json_data_array))
+        self.graph.grid(row=0, column=3)
 
         if filter_type == "default":
             filter_label_text = "| no filter, click any data column on top to filter shown records"
@@ -432,7 +445,6 @@ class gui_class():
         self.filter_label = Label(filter_interface, text=filter_label_text, bg="#0e0e0f", fg="#66c0f4", width=48, border=0, anchor="w")
         self.filter_label.grid(row=0, column=5)
 
-
         filter_interface.pack(fill="x")
 
         # lijst data informatie koppen
@@ -440,11 +452,11 @@ class gui_class():
         fake_game_card.pack(anchor="w")
 
         Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
-        Button(fake_game_card, border=0, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w').grid(row=0, column=1)
-        Button(fake_game_card, border=0, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10).grid(row=0, column=2)
-        Button(fake_game_card, border=0, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "score highlow" if filter_type=="score lowhigh" or filter_type=="defualt" else "score lowhigh", False, json_data_array)).grid(row=0, column=3)
-        Button(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=16).grid(row=0, column=4)
-        Button(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=10).grid(row=0, column=5)
+        Button(fake_game_card, border=1, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w').grid(row=0, column=1)
+        Button(fake_game_card, border=1, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10, command= lambda: gui_class.game_list_gui(self, 1, "price highlow" if filter_type=="price lowhigh" or filter_type=="defualt" else "price lowhigh", False, json_data_array)).grid(row=0, column=2)
+        Button(fake_game_card, border=1, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "score highlow" if filter_type=="score lowhigh" or filter_type=="defualt" else "score lowhigh", False, json_data_array)).grid(row=0, column=3)
+        Label(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=16).grid(row=0, column=4)
+        Label(fake_game_card, border=0, text=" ages ", bg="#1b1b1c", fg="#c7d5e0", width=11).grid(row=0, column=5)
 
         # maak scroll frame
         self.canvas = Canvas(self.root, height=400, background="#0e0e0f", bd=0, highlightthickness=0)
