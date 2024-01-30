@@ -4,6 +4,11 @@ import os
 from TI import TI
 from crawler import Crawler
 from dotenv import load_dotenv
+from quickchart import QuickChart
+from urllib.request import urlopen
+from PIL import ImageTk, Image
+from io import BytesIO
+import re
 load_dotenv()
 
 class json_parser():
@@ -126,6 +131,238 @@ class json_parser():
                     # filterd niks
                     main_segments.append(initial_segment)
         return main_segments
+    
+    def graph_assembly(self, dataset):
+        ############################### genre graph #################################
+        game_genres = []
+        for card in dataset:
+            # haal algemene game card data op
+            for key, value in card.items():
+                if 'data' in value:
+                    game_data = value['data']
+                    break
+            for genre in game_data['genres']:
+                game_genres.append(genre['description'])
+        
+        # get data per genre
+        already_used_genres = []
+        genre_graph = []
+        for genre in game_genres:
+            if genre in already_used_genres:
+                continue
+            genre_name = genre
+            already_used_genres.append(genre_name)
+            genre_frequency = game_genres.count(genre)
+            genre_percentage = (genre_frequency/len(game_genres))*100
+            genre_graph.append([genre_name, genre_frequency, genre_percentage])
+            
+        labels = [genre[0] for genre in genre_graph]
+        labels = ",".join("\""+str(x)+"\"" for x in labels)
+        data = [genre[1] for genre in genre_graph]
+        data = ",".join(str(x) for x in data)
+        data2 = [round(genre[2],1) for genre in genre_graph]
+        data2 = ",".join(str(x) for x in data2)
+
+        qc = QuickChart()
+        qc.width = 700
+        qc.height = 400
+        qc.version = '2.9.4'
+        qc.config = """{ 
+            type: 'radar',
+            data: {
+                labels: ["""+labels+"""],
+                datasets: [
+                    {
+                        label: 'Frequency',
+                        data: ["""+data+"""]
+                    },
+                    {
+                        label: 'Precent',
+                        data: ["""+data2+"""]
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    backgroundImageUrl: 'https://www.colorhexa.com/0e0e0f.png',
+                },
+                "datalabels": {
+                    "display": true,
+                    "align": "center",
+                    "anchor": "center",
+                    "backgroundColor": "#66c0f4",
+                    "borderColor": "#ddd",
+                    "borderRadius": 6,
+                    "borderWidth": 1,
+                    "padding": 2,
+                    "color": "#ffffff",
+                    "font": {
+                        "family": "sans-serif",
+                        "size": 15,
+                        "style": "bold"
+                    }
+                },
+                legend: {
+                    display: true
+                },
+                "scale": {
+                    "ticks": {
+                        "display": true,
+                        "stepSize": 25,
+                        "fontSize": 20
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                        "display": true,
+                        "color": "rgba(255, 255, 255, 0.5)",
+                        "borderDash": [
+                            0,
+                            0
+                        ],
+                        "lineWidth": 1,
+                        "drawBorder": true,
+                        "drawOnChartArea": true,
+                        "drawTicks": true,
+                        "tickMarkLength": 10,
+                        "zeroLineWidth": 1,
+                        "zeroLineColor": "rgba(255, 255, 255, 0)",
+                        "zeroLineBorderDash": [
+                            0,
+                            0
+                        ]
+                    }
+                }
+            }
+        }"""
+        response = urlopen(qc.get_url())
+        self.genre_image = Image.open(BytesIO(response.read()))
+        response.close()
+        self.genre_image = ImageTk.PhotoImage(self.genre_image)
+
+############################### ram spec graph #################################
+        
+        def parse_ram_size(ram_string):
+            unit_multiplier = {'gb': 1024, 'mb': 1}
+            match = re.search(r'(\d+\.?\d*)\s*(gb|mb)?(?:\s*(?:system\s*)?RAM)?', ram_string, re.IGNORECASE)
+
+            if match:
+                size, unit = match.groups()
+                size_in_mb = int(float(size) * unit_multiplier[unit.lower()]) if unit else int(float(size))
+                return size_in_mb
+            else:
+                return None
+    
+        game_rams = []
+        for card in dataset:
+            # haal algemene game card data op
+            for key, value in card.items():
+                if 'data' in value:
+                    game_data = value['data']
+                    break
+            full_requirements = game_data['pc_requirements']['minimum']
+            ram_data = re.search("Memory:<\/strong>.*?<br>", full_requirements)
+            if ram_data:
+                ram_data = ram_data.group()
+            elif ram_data == None:
+                continue
+            ram_data = ram_data.replace("Memory:</strong>","").replace("<br>","").strip()
+            game_rams.append([ram_data, parse_ram_size(ram_data)])
+        
+        # get data per ram size
+        ram_graph = []
+        for ram in game_rams:
+            ram_name = ram[0]
+            ram_score = ram[1]
+            existing_ram = next((item for item in ram_graph if item[1] == ram_score), None)
+            if existing_ram:
+                existing_ram[2] += 1
+            else:
+                ram_graph.append([ram_name, ram_score, 1])
+        
+        labels = [ram[0] for ram in ram_graph]
+        labels = ",".join("\""+str(x)+"\"" for x in labels)
+        data = [ram[1]/1000 for ram in ram_graph]
+        data = ",".join(str(x) for x in data)
+        data2 = [round(ram[2],1) for ram in ram_graph]
+        data2 = ",".join(str(x) for x in data2)
+
+        qc = QuickChart()
+        qc.width = 700
+        qc.height = 400
+        qc.version = '2.9.4'
+        qc.config = """{ 
+            type: 'radar',
+            data: {
+                labels: ["""+labels+"""],
+                datasets: [
+                    {
+                        label: 'RAM in MBs/1000',
+                        data: ["""+data+"""]
+                    },
+                    {
+                        label: 'Frequency',
+                        data: ["""+data2+"""]
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    backgroundImageUrl: 'https://www.colorhexa.com/0e0e0f.png',
+                },
+                "datalabels": {
+                    "display": true,
+                    "align": "center",
+                    "anchor": "center",
+                    "backgroundColor": "#66c0f4",
+                    "borderColor": "#ddd",
+                    "borderRadius": 6,
+                    "borderWidth": 1,
+                    "padding": 2,
+                    "color": "#ffffff",
+                    "font": {
+                        "family": "sans-serif",
+                        "size": 15,
+                        "style": "bold"
+                    }
+                },
+                legend: {
+                    display: true
+                },
+                "scale": {
+                    "ticks": {
+                        "display": true,
+                        "stepSize": 5,
+                        "fontSize": 20
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                        "display": true,
+                        "color": "rgba(255, 255, 255, 0.5)",
+                        "borderDash": [
+                            0,
+                            0
+                        ],
+                        "lineWidth": 1,
+                        "drawBorder": true,
+                        "drawOnChartArea": true,
+                        "drawTicks": true,
+                        "tickMarkLength": 10,
+                        "zeroLineWidth": 1,
+                        "zeroLineColor": "rgba(255, 255, 255, 0)",
+                        "zeroLineBorderDash": [
+                            0,
+                            0
+                        ]
+                    }
+                }
+            }
+        }"""
+        response = urlopen(qc.get_url())
+        self.spec_image = Image.open(BytesIO(response.read()))
+        response.close()
+        self.spec_image = ImageTk.PhotoImage(self.spec_image)
+
+        return self.genre_image, self.spec_image
     
     def game_search(game_name):
         # vraagt alle game id's op van steam

@@ -8,10 +8,8 @@ import requests
 from io import BytesIO
 import time
 from ttkthemes import ThemedTk
-from urllib.request import urlopen
 import os
 import json
-from quickchart import QuickChart
 
 # filter instances:
 # ↓: high to low
@@ -311,124 +309,40 @@ class gui_class():
 
     def dataset_graph(self, dataset):
         gui_class.clear_root(self)
-        
+
+        self.current_graph_id = 1   
+
         self.previous = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "gamelist"))
         self.previous.pack(anchor="w")
 
-        header = Label(self.root, text="This graph shows the distrubution of genres\nof all records currently visible in the list.", bg="#0e0e0f", fg="#ffffff", border=0)
-        header.pack()
+        self.header_frame = LabelFrame(self.root, bg="#0e0e0f", border=0)
+        Button(self.header_frame, text="< Previous", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id+1)).grid(row=0, column=0)
+        self.header_label = Label(self.header_frame, padx=10, text="", bg="#0e0e0f", fg="#ffffff", border=0).grid(row=0, column=1)
+        Button(self.header_frame, text="Next >", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id-1)).grid(row=0, column=2)
+        self.header_frame.pack()
 
-        # get game genres
-        game_genres = []
-        for card in dataset:
-            # haal algemene game card data op
-            for key, value in card.items():
-                if 'data' in value:
-                    game_data = value['data']
-                    break
-            for genre in game_data['genres']:
-                game_genres.append(genre['description'])
-        
-        # get data per genre
-        already_used_genres = []
-        genre_graph = []
-        for genre in game_genres:
-            if genre in already_used_genres:
-                continue
-            genre_name = genre
-            already_used_genres.append(genre_name)
-            genre_frequency = game_genres.count(genre)
-            genre_percentage = (genre_frequency/len(game_genres))*100
-            genre_graph.append([genre_name, genre_frequency, genre_percentage])
-            
-        # display genre data
-        # get graph image
-        labels = [genre[0] for genre in genre_graph]
-        labels = ",".join("\""+str(x)+"\"" for x in labels)
-        data = [genre[1] for genre in genre_graph]
-        data = ",".join(str(x) for x in data)
-        data2 = [round(genre[2],1) for genre in genre_graph]
-        data2 = ",".join(str(x) for x in data2)
+        self.genre_image, self.spec_image, self.price_image = JSON.graph_assembly(self, dataset)
 
-        qc = QuickChart()
-        qc.width = 700
-        qc.height = 400
-        qc.version = '2.9.4'
-        qc.config = """{ 
-            type: 'radar',
-            data: {
-                labels: ["""+labels+"""],
-                datasets: [
-                    {
-                        label: 'Frequency',
-                        data: ["""+data+"""]
-                    },
-                    {
-                        label: 'Precent',
-                        data: ["""+data2+"""]
-                    }
-                ]
-            },
-            options: {
-                plugins: {
-                    backgroundImageUrl: 'https://www.colorhexa.com/0e0e0f.png',
-                },
-                "datalabels": {
-                    "display": true,
-                    "align": "center",
-                    "anchor": "center",
-                    "backgroundColor": "#66c0f4",
-                    "borderColor": "#ddd",
-                    "borderRadius": 6,
-                    "borderWidth": 1,
-                    "padding": 2,
-                    "color": "#ffffff",
-                    "font": {
-                        "family": "sans-serif",
-                        "size": 15,
-                        "style": "bold"
-                    }
-                },
-                legend: {
-                    display: true
-                },
-                "scale": {
-                    "ticks": {
-                        "display": true,
-                        "stepSize": 25,
-                        "fontSize": 20
-                    },
-                    "distribution": "linear",
-                    "gridLines": {
-                        "display": true,
-                        "color": "rgba(255, 255, 255, 0.5)",
-                        "borderDash": [
-                            0,
-                            0
-                        ],
-                        "lineWidth": 1,
-                        "drawBorder": true,
-                        "drawOnChartArea": true,
-                        "drawTicks": true,
-                        "tickMarkLength": 10,
-                        "zeroLineWidth": 1,
-                        "zeroLineColor": "rgba(255, 255, 255, 0)",
-                        "zeroLineBorderDash": [
-                            0,
-                            0
-                        ]
-                    }
-                }
-            }
-        }"""
-        print(qc.get_url())
-        response = urlopen(qc.get_url())
-        self.img = Image.open(BytesIO(response.read()))
-        response.close()
-        self.img = ImageTk.PhotoImage(self.img)
-        image_label = Label(self.root, image=self.img, border=0).pack()
-        image_label.image = self.img 
-        image_label.grid(row=0, column=0) 
+        self.image_label = Label(self.root, image=self.genre_image, border=0).pack()
+        self.image_label.image = self.genre_image
+        self.image_label.grid(row=0, column=0)
+
+        def update_labels(current_graph_id):
+            if current_graph_id == 0: current_graph_id = 3
+            if current_graph_id == 4: current_graph_id = 1
+            self.current_graph_id = current_graph_id
+
+            if current_graph_id == 1:
+                self.image_label.configure(image=self.genre_image)
+                self.header_label.configure(text="This graph shows the distrubution of genres\nof all records previously shown in the list.")
+            elif current_graph_id == 2:
+                self.image_label.configure(image=self.spec_image)
+                self.header_label.configure(text="This graph shows the minimum required memory size\nand the frequency of its size of all records\npreviously shown in the list.")
+            elif current_graph_id == 3:
+                self.image_label.configure(image=self.price_image)
+                self.header_label.configure(text="This graph shows the difference in price\nof all records previously shown in the list.")
+
+        update_labels(self.current_graph_id)
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
         if dataset == None:
@@ -482,7 +396,7 @@ class gui_class():
         self.search = Button(filter_interface, text="Search", bg="#3b6282", fg="#66c0f4", width=5, border=1, command=lambda: gui_class.game_search(self, self.game_entry.get()))
         self.search.grid(row=0, column=2)
 
-        self.graph = Button(filter_interface, text="Genre Graph", bg="#3b6282", fg="#66c0f4", width=10, border=1, command=lambda: gui_class.dataset_graph(self, json_data_array))
+        self.graph = Button(filter_interface, text="Data Graphs", bg="#3b6282", fg="#66c0f4", width=10, border=1, command=lambda: gui_class.dataset_graph(self, json_data_array))
         self.graph.grid(row=0, column=3)
 
         if filter_type == "default":
