@@ -362,7 +362,96 @@ class json_parser():
         response.close()
         self.spec_image = ImageTk.PhotoImage(self.spec_image)
 
-        return self.genre_image, self.spec_image
+ ############################### price graph #################################
+        # >10$, >25$, >50$, >100$, <100$
+        price_categories = [[],[],[],[],[]]
+        for card in dataset:
+            price = json_parser.get_object_price(card)
+            if price <= 0:
+                price_categories[0].insert(0, price)
+            elif price < 25:
+                price_categories[1].insert(0, price)
+            elif price < 50:
+                price_categories[2].insert(0, price)
+            elif price < 100:
+                price_categories[3].insert(0, price)
+            elif price > 100:
+                price_categories[4].insert(0, price)
+
+        price_categories = str(len(price_categories[0]))+","+str(len(price_categories[1]))+","+str(len(price_categories[2]))+","+str(len(price_categories[3]))+","+str(len(price_categories[4]))
+        qc = QuickChart()
+        qc.width = 700
+        qc.height = 400
+        qc.version = '2.9.4'
+        qc.config = """{ 
+            type: 'radar',
+            data: {
+                labels: ["<10$","<25$","<50$","<100$",">100$"],
+                datasets: [
+                    {
+                        label: 'Price',
+                        data: ["""+price_categories+"""]
+                    },
+                ]
+            },
+            options: {
+                plugins: {
+                    backgroundImageUrl: 'https://www.colorhexa.com/0e0e0f.png',
+                },
+                "datalabels": {
+                    "display": true,
+                    "align": "center",
+                    "anchor": "center",
+                    "backgroundColor": "#66c0f4",
+                    "borderColor": "#ddd",
+                    "borderRadius": 6,
+                    "borderWidth": 1,
+                    "padding": 2,
+                    "color": "#ffffff",
+                    "font": {
+                        "family": "sans-serif",
+                        "size": 15,
+                        "style": "bold"
+                    }
+                },
+                legend: {
+                    display: true
+                },
+                "scale": {
+                    "ticks": {
+                        "display": true,
+                        "stepSize": 10,
+                        "fontSize": 20
+                    },
+                    "distribution": "linear",
+                    "gridLines": {
+                        "display": true,
+                        "color": "rgba(255, 255, 255, 0.5)",
+                        "borderDash": [
+                            0,
+                            0
+                        ],
+                        "lineWidth": 1,
+                        "drawBorder": true,
+                        "drawOnChartArea": true,
+                        "drawTicks": true,
+                        "tickMarkLength": 10,
+                        "zeroLineWidth": 1,
+                        "zeroLineColor": "rgba(255, 255, 255, 0)",
+                        "zeroLineBorderDash": [
+                            0,
+                            0
+                        ]
+                    }
+                }
+            }
+        }"""
+        response = urlopen(qc.get_url())
+        self.price_image = Image.open(BytesIO(response.read()))
+        response.close()
+        self.price_image = ImageTk.PhotoImage(self.price_image)
+
+        return self.genre_image, self.spec_image, self.price_image
     
     def game_search(game_name):
         # vraagt alle game id's op van steam

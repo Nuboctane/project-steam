@@ -10,6 +10,7 @@ import time
 from ttkthemes import ThemedTk
 import os
 import json
+from urllib.request import urlopen
 
 # filter instances:
 # ↓: high to low
@@ -314,18 +315,9 @@ class gui_class():
 
         self.previous = Button(self.root, text="< Back", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "gamelist"))
         self.previous.pack(anchor="w")
-
+        self.image_label = Label(self.root, image=None, border=0)
         self.header_frame = LabelFrame(self.root, bg="#0e0e0f", border=0)
-        Button(self.header_frame, text="< Previous", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id+1)).grid(row=0, column=0)
-        self.header_label = Label(self.header_frame, padx=10, text="", bg="#0e0e0f", fg="#ffffff", border=0).grid(row=0, column=1)
-        Button(self.header_frame, text="Next >", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id-1)).grid(row=0, column=2)
-        self.header_frame.pack()
-
-        self.genre_image, self.spec_image, self.price_image = JSON.graph_assembly(self, dataset)
-
-        self.image_label = Label(self.root, image=self.genre_image, border=0).pack()
-        self.image_label.image = self.genre_image
-        self.image_label.grid(row=0, column=0)
+        self.header_label = Label(self.header_frame, padx=10, text="", bg="#0e0e0f", fg="#ffffff", border=0)
 
         def update_labels(current_graph_id):
             if current_graph_id == 0: current_graph_id = 3
@@ -341,6 +333,16 @@ class gui_class():
             elif current_graph_id == 3:
                 self.image_label.configure(image=self.price_image)
                 self.header_label.configure(text="This graph shows the difference in price\nof all records previously shown in the list.")
+
+
+        Button(self.header_frame, text="< Previous", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id+1)).grid(row=0, column=0)
+        self.header_label.grid(row=0, column=1)
+        Button(self.header_frame, text="Next >", bg="#3b6282", fg="#ffffff", border=0, command=lambda: update_labels(self.current_graph_id-1)).grid(row=0, column=2)
+        self.header_frame.pack()
+
+        self.genre_image, self.spec_image, self.price_image = JSON.graph_assembly(self, dataset)
+
+        self.image_label.pack()
 
         update_labels(self.current_graph_id)
 
