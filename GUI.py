@@ -41,18 +41,20 @@ class gui_class():
         self.root.mainloop()
     
     def clear_root(self):
+        # gui leeg maken om andere dingen makkelijk te tonen
         for widget in self.root.winfo_children():
             widget.destroy()
     
     def loading_icon(self):
+        # laadt icoontje tonen wanneer er iets nieuws wordt ingeladen in de gui
         def update_loader(ind):
             if self.canvas_frame != 0:
                 self.canvas_frame.pack_forget()
 
-            frame = self.loading_frames[ind].subsample(3, 3)  # Adjust subsample values as needed
+            frame = self.loading_frames[ind].subsample(3, 3)
             try:
                 self.loading_label.configure(image=frame)
-                self.loading_label.image = frame  # Keep a reference to avoid garbage collection
+                self.loading_label.image = frame
             except:
                 None
             ind += 1
@@ -62,15 +64,17 @@ class gui_class():
         
         frame_count = 53
         self.loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
-        self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
         self.loading_label.pack()
+        self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
         update_loader(0)
 
     def on_back_press(self, location):
+        # wanneer de gebruiker op "terug" clicked gaat die terug naar het vorige scherm
         gui_class.clear_root(self)
         if location == "menu":
             main_update_thread = threading.Thread(target=gui_class.menu_gui, args=(self,))
         elif location == "gamelist":
+            # er voor zorgen dat als de gebruiker terug gaat, hij de vorige zoek resultaten laat zien
             if os.stat("steam_search.json").st_size > 10:
                 with open("steam_search.json", "r") as file:
                     file_as_json = json.load(file)
@@ -416,7 +420,7 @@ class gui_class():
         fake_game_card.pack(anchor="w")
 
         Label(fake_game_card, text=f"[{len(json_data_array)}]", bg="#1b1b1c", fg="#c7d5e0", width=6).grid(row=0, column=0)
-        Button(fake_game_card, border=1, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w').grid(row=0, column=1)
+        Button(fake_game_card, border=1, text=" name ", bg="#1b1b1c", fg="#66c0f4", width=34, anchor='w', command= lambda: gui_class.game_list_gui(self, 1, "alpha z-a" if filter_type=="alpha a-z" or filter_type=="defualt" else "alpha a-z", False, json_data_array)).grid(row=0, column=1)
         Button(fake_game_card, border=1, text=" price ", bg="#1b1b1c", fg="#8eab11", width=10, command= lambda: gui_class.game_list_gui(self, 1, "price highlow" if filter_type=="price lowhigh" or filter_type=="defualt" else "price lowhigh", False, json_data_array)).grid(row=0, column=2)
         Button(fake_game_card, border=1, text=" score ", bg="#1b1b1c", fg="#c7d5e0", width=20, command= lambda: gui_class.game_list_gui(self, 1, "score highlow" if filter_type=="score lowhigh" or filter_type=="defualt" else "score lowhigh", False, json_data_array)).grid(row=0, column=3)
         Label(fake_game_card, border=0, text=" systems ", bg="#1b1b1c", fg="#4b5466", width=16).grid(row=0, column=4)

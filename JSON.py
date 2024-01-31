@@ -75,6 +75,14 @@ class json_parser():
             if "€" in str(card_price):
                 card_price = float(str(card_price).replace("€", "").replace(",", "."))
             return card_price
+        
+    def get_object_name(initial_segment):
+        for key, value in initial_segment.items():
+            if 'data' in value:
+                card_data = value['data']
+                break
+        return str(card_data['name'])
+
     def get_json():
         # json data op halen uit bestand "steam.json"
         with open("steam.json", "r") as file:
@@ -85,7 +93,12 @@ class json_parser():
     def parse_json(json_data, filter_type):
         # json data segmenteren om te gebruiken
         main_segments = [] # hoofd segmenten zijn de objecten in de eerste tak van de json
+        alphabetic_array = []
+        iteration_index = 0
         for initial_segment in json_data:
+            iteration_index+=1
+            if filter_type == "alpha a-z" or filter_type == "alpha z-a":
+                alphabetic_array.append(json_parser.get_object_name(initial_segment))
             match filter_type:
                 case "default":
                     # filterd niks
@@ -127,6 +140,19 @@ class json_parser():
                                     json_data[j], json_data[j + 1] = json_data[j + 1], json_data[j]
                         return json_data
                     main_segments = price_sort(json_data)
+                case "alpha a-z":
+                    if iteration_index == len(json_data):
+                        key_function = lambda segment: json_parser.get_object_name(segment)
+                        sorted_json_data = sorted(json_data, key=key_function)
+                        for i in sorted_json_data:
+                            main_segments.append(i)
+
+                case "alpha z-a":
+                    if iteration_index == len(json_data):
+                        key_function = lambda segment: json_parser.get_object_name(segment)
+                        sorted_json_data = sorted(json_data, key=key_function, reverse=True)
+                        for i in sorted_json_data:
+                            main_segments.append(i)
                 case _:
                     # filterd niks
                     main_segments.append(initial_segment)
