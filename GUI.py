@@ -333,6 +333,10 @@ class gui_class():
         image_label = Label(self.frame_game, image=img)
         image_label.image = img 
         image_label.grid(row=0, column=0)
+        try:
+            TI.send_serial(game_data['name'])
+        except:
+            None
         
     def game_search(self, search):
         # zoek een game op ahdv gegeven tekst (kan soms een paar minuten duren)
