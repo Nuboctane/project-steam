@@ -64,8 +64,8 @@ class gui_class():
         
         frame_count = 53
         self.loading_frames = [PhotoImage(file='assets/qwe_download.gif', format='gif -index %i' % i) for i in range(frame_count)]
-        self.loading_label.pack()
         self.loading_label = Label(self.root, width=80, height=80, background="#0e0e0f")
+        self.loading_label.pack()
         update_loader(0)
 
     def on_back_press(self, location):
