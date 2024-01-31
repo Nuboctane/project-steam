@@ -41,6 +41,8 @@ Als je de Raspberry pi PICO wilt laten werken, moet je drie bestanden uploaden n
 
 ![App Screenshot](https://i.imgur.com/SBRY015.png)
 ![App Screenshot](https://i.imgur.com/XVvWLIw.png)
+![App Screenshot](https://i.imgur.com/yo6cmes.png)
+![App Screenshot](https://i.imgur.com/pHFD8ph.png)
 
 
 ## Authors

@@ -649,3 +649,16 @@ class json_parser():
         except:
             None
         return status
+    
+    def friends_status(user_id):
+        url = f"http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key={os.getenv('STEAM_API_KEY')}&steamid={user_id}&relationship=friend"
+        response = requests.get(url)
+        response_data = response.json()
+        friends_list = []
+        try:
+            for friend in response_data['friendslist']['friends']:
+                friends = json_parser.get_user_info(friend['steamid'])
+                friends_list.append(friends['response']['players'][0]['personaname'])
+        except:
+            None
+        return friends_list

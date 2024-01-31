@@ -11,6 +11,7 @@ from ttkthemes import ThemedTk
 import os
 import json
 from urllib.request import urlopen
+import datetime
 
 # filter instances:
 # ↓: high to low
@@ -85,6 +86,7 @@ class gui_class():
         main_update_thread.start()
     
     def friends_status(self):
+        #het scherm waar je een gebruiker kunt zoeken
         gui_class.clear_root(self)
         self.back = Button(self.root, text="< Menu", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: gui_class.on_back_press(self, "menu"))
         self.back.pack(anchor="w")
@@ -95,7 +97,9 @@ class gui_class():
         self.username_entry = Entry(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0)
         self.username_entry.grid(row=1, column=0)
         self.count_friends = 0
+
         def on_more_info_press(steam_id):
+            #laat recenten games zien van de gebruiker
             all_games = JSON.user_games_recent(steam_id)
             self.listbox_games = Listbox(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0, width=50)
             self.listbox_games.grid(row=2, column=1)
@@ -111,27 +115,56 @@ class gui_class():
                     data = f"{game} has been played {round(play_time, 1)} hours"
                     self.listbox_games.insert(0, data)
             
+        def on_friends_press(user_id):
+            #laat vrienden zien van de gebruiker
+            friends = JSON.friends_status(user_id)
+            self.listbox_friends = Listbox(self.frame_friends, bg="#1b1b1c", fg="#c7d5e0", border=0, width=50)
+            self.listbox_friends.grid(row=2, column=1)
+            friends_name = friends
+            if friends == []:
+                self.listbox_friends.insert(0, "This user has a private profile")
+            else:
+                for i in range(len(friends_name)):
+                    self.listbox_friends.insert(0, friends_name[i])
+
         def on_search_press():
+            #zoek de gebruiker op en check als er een listbox is en verwijder die
             if hasattr(self, 'listbox_games'):
                 self.listbox_games.grid_forget()
+            elif hasattr(self, 'listbox_friends'):
+                self.listbox_friends.grid_forget()
             username = self.username_entry.get()
+            #als de gebruikker iets heeft ingevuld dan gaat hij beginnen met zoeken
             if username:
+                #paar try en excepts want er moet rekening gehouden worden met private profielen
                 user_info = JSON.get_user_info(username)
                 username = user_info['response']['players'][0]['personaname']
                 try:
                     country = user_info['response']['players'][0]['loccountrycode']
                 except:
                     country = "Unknown"
+                try:
+                    unix_time = user_info['response']['players'][0]['lastlogoff']
+                except:
+                    unix_time = 0
+                if unix_time == 0:
+                    lastlogoff = "Unknown"
+                else:
+                    #verander de unix time naar een normale tijd
+                    lastlogoff = datetime.datetime.fromtimestamp(int(unix_time)).strftime('%Y-%m-%d %H:%M:%S')
+                #stuurd de status van de gebruiker naar de functie die check wat de status is en verstuurd het ook naar de PICO
                 status = JSON.user_status(user_info)
                 status = status.replace("status=", "")
                 steam_id = user_info['response']['players'][0]['steamid']
                 game_image = user_info['response']['players'][0]['avatarfull']
+                #haal de profiel foto op van de gebruiker
                 response = urlopen(game_image)
                 img = Image.open(BytesIO(response.read()))
                 response.close()
                 img = ImageTk.PhotoImage(img)
                 self.count_friends
                 if self.count_friends == 0:
+                    #check als er al een gebruiker is gevonden en als dat zo is dan wordt de labels, buttons en de image geupdate
                     self.count_friends += 1
                     self.image_label = Label(self.frame_friends, image=img)
                     self.image_label.image = img 
@@ -140,11 +173,16 @@ class gui_class():
                     self.name_label.grid(row=3, column=0)
                     self.satus_label = Label(self.frame_friends, text="Status: "+str(status), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
                     self.satus_label.grid(row=4, column=0)
+                    self.time_label = Label(self.frame_friends, text="Last logoff: "+str(lastlogoff), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
+                    self.time_label.grid(row=5, column=0)
                     self.country_label = Label(self.frame_friends, text="Country: "+str(country), bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
-                    self.country_label.grid(row=5, column=0)
+                    self.country_label.grid(row=6, column=0)
                     self.more_info = Button(self.frame_friends, text="Played Games", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_more_info_press(steam_id))
-                    self.more_info.grid(row=6, column=0)
+                    self.more_info.grid(row=7, column=0)
+                    self.friends_list = Button(self.frame_friends, text="Friends", bg="#3b6282", fg="#66c0f4", border=0, command=lambda: on_friends_press(steam_id))
+                    self.friends_list.grid(row=8, column=0)
                 else:
+                    #update de labels, buttons en de image
                     image_label = Label(self.frame_friends, image=img)
                     image_label.image = img 
                     image_label.grid(row=2, column=0)
@@ -152,6 +190,7 @@ class gui_class():
                     self.satus_label.config(text="Status: "+str(status))
                     self.country_label.config(text="Country: "+str(country))
                     self.more_info.config(command=lambda: on_more_info_press(steam_id))
+                    self.friends_list.config(command=lambda: on_friends_press(steam_id))
         self.search = Button(self.frame_friends, text="Search", bg="#3b6282", fg="#66c0f4", border=0, command=on_search_press)
         self.search.grid(row=1, column=1)
     
