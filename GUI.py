@@ -156,12 +156,13 @@ class gui_class():
         self.search.grid(row=1, column=1)
     
     def menu_gui(self):
-
+        # begin scherm
         button_frame = Frame(self.root, bg="#0e0e0f")
         button_frame.pack(pady=10)
         self.label = Label(button_frame, text="Select one of the options", bg="#0e0e0f", fg="#c7d5e0", font=("Segoe UI", 16))
         self.label.pack(pady=10)
 
+        # open gebruikers zoek scherm
         def on_user_press():
             gui_class.clear_root(self)
             main_update_thread = threading.Thread(target=gui_class.friends_status, args=(self,))
@@ -170,6 +171,7 @@ class gui_class():
         self.users = Button(button_frame, text="Search Users", bg="#3b6282", fg="#66c0f4", border=0, command=on_user_press, height=2, width=15, font=("Segoe UI", 16))
         self.users.pack(side=LEFT, padx=10)
 
+        # open game lijst menu
         def on_game_press():
             gui_class.clear_root(self)
             main_update_thread = threading.Thread(target=gui_class.game_list_gui, args=(self, 1, "default", False, None))
@@ -179,6 +181,7 @@ class gui_class():
         self.games.pack(side=LEFT, padx=10)
 
     def Show_game(self, game_id, json_data_array):
+        # toon 1 specefiek spel
         gui_class.clear_root(self)
         gui_class.loading_icon(self)
         reviews = []
@@ -293,6 +296,7 @@ class gui_class():
         image_label.grid(row=0, column=0)
         
     def game_search(self, search):
+        # zoek een game op ahdv gegeven tekst (kan soms een paar minuten duren)
         gui_class.clear_root(self)
         gui_class.loading_icon(self)
         open('steam_search.json', 'w').close()
@@ -300,12 +304,7 @@ class gui_class():
         def search_thread(a,b,search):
             JSON.game_search(search)
 
-        # main_update_thread = threading.Thread(target=search_thread, args=(search))
-        # main_update_thread.start()
         search_thread(1,2,search)
-        # while os.stat("steam_search.json").st_size < 10:
-        #     print('loading...')
-        #     time.sleep(0.1)
         with open("steam_search.json", "r") as file:
             file_as_json = json.load(file)
             file.close()
@@ -313,6 +312,7 @@ class gui_class():
         main_update_thread2.start()
 
     def dataset_graph(self, dataset):
+        # toon een menu waarin je kunt navigeren naar meerdere grafieken
         gui_class.clear_root(self)
 
         self.current_graph_id = 1   
@@ -351,6 +351,7 @@ class gui_class():
         update_labels(self.current_graph_id)
 
     def game_list_gui(self, fetch_limit, filter_type, fetch_api_bool, dataset):
+        # toon de lijst met games
         if dataset == None:
             gui_class.loading_icon(self)
         print("dataset:", len(dataset) if dataset != None else "None")
@@ -378,8 +379,6 @@ class gui_class():
                     file.close()
                 json_data_array = JSON.parse_json(file_as_json, filter_type)
 
-        
-        # print(json_data_array[0])
         # remove loading icon
         time.sleep(1)
         gui_class.clear_root(self)

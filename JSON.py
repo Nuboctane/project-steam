@@ -159,6 +159,7 @@ class json_parser():
         return main_segments
     
     def graph_assembly(self, dataset):
+        # deze functie gebruikt the quick chart api om grafieken te maken voor de data
         ############################### genre graph #################################
         game_genres = []
         for card in dataset:
@@ -181,7 +182,8 @@ class json_parser():
             genre_frequency = game_genres.count(genre)
             genre_percentage = (genre_frequency/len(game_genres))*100
             genre_graph.append([genre_name, genre_frequency, genre_percentage])
-            
+        
+        # formateer de data om aan de api te geven
         labels = [genre[0] for genre in genre_graph]
         labels = ",".join("\""+str(x)+"\"" for x in labels)
         data = [genre[1] for genre in genre_graph]
@@ -189,6 +191,7 @@ class json_parser():
         data2 = [round(genre[2],1) for genre in genre_graph]
         data2 = ",".join(str(x) for x in data2)
 
+        # grafiek maken met api request
         qc = QuickChart()
         qc.width = 700
         qc.height = 400
@@ -305,6 +308,7 @@ class json_parser():
             else:
                 ram_graph.append([ram_name, ram_score, 1])
         
+        # data formateren
         labels = [ram[0] for ram in ram_graph]
         labels = ",".join("\""+str(x)+"\"" for x in labels)
         data = [ram[1]/1000 for ram in ram_graph]
@@ -312,6 +316,7 @@ class json_parser():
         data2 = [round(ram[2],1) for ram in ram_graph]
         data2 = ",".join(str(x) for x in data2)
 
+        # grafiek maken met api request
         qc = QuickChart()
         qc.width = 700
         qc.height = 400
@@ -391,6 +396,7 @@ class json_parser():
  ############################### price graph #################################
         # >10$, >25$, >50$, >100$, <100$
         price_categories = [[],[],[],[],[]]
+        # prijzen over categorieen verdelen
         for card in dataset:
             price = json_parser.get_object_price(card)
             if price <= 0:
@@ -404,7 +410,10 @@ class json_parser():
             elif price > 100:
                 price_categories[4].insert(0, price)
 
+        # data formateren voor api
         price_categories = str(len(price_categories[0]))+","+str(len(price_categories[1]))+","+str(len(price_categories[2]))+","+str(len(price_categories[3]))+","+str(len(price_categories[4]))
+        
+        # api request maken
         qc = QuickChart()
         qc.width = 700
         qc.height = 400
@@ -548,6 +557,7 @@ class json_parser():
             return new_response
 
     def get_game_reviews(game_id):
+        # reviews ophalen van een game
         url_game_reviews = f"https://store.steampowered.com/appreviews/{game_id}?json=1&num_per_page=5"
         response_review = requests.get(url_game_reviews)
         response_review = response_review.json()
